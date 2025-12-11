@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   CreditCard,
   Landmark,
-  Check,
   Lock,
   ShieldCheck,
   ArrowRight,
@@ -13,12 +12,20 @@ import {
 const FlightPayment = () => {
   const [activeTab, setActiveTab] = useState("card");
   const [loading, setLoading] = useState(false);
+  const [ticketingOption, setTicketingOption] = useState("issue"); // 'issue' or 'hold'
 
   const handlePay = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Payment Successful! Your booking is confirmed. (Demo)");
+      const action =
+        ticketingOption === "hold" ? "Booking Held" : "Payment Successful";
+      alert(
+        `${action}! Your booking reference is ${Math.random()
+          .toString(36)
+          .substr(2, 6)
+          .toUpperCase()}.`
+      );
       window.location.href = "/";
     }, 2000);
   };
@@ -27,6 +34,7 @@ const FlightPayment = () => {
     { id: "card", label: "Credit / Debit Card", icon: CreditCard },
     { id: "sepa", label: "SEPA Direct Debit", icon: Landmark },
     { id: "sofort", label: "Sofort / Klarna", icon: ShieldCheck },
+    { id: "bsp", label: "Agency / BSP", icon: Lock },
   ];
 
   return (
@@ -80,12 +88,12 @@ const FlightPayment = () => {
           className="bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-white/10 overflow-hidden"
         >
           {/* Tabs */}
-          <div className="flex border-b border-gray-100 dark:border-gray-800 bg-white/50 dark:bg-black/20">
+          <div className="flex border-b border-gray-100 dark:border-gray-800 bg-white/50 dark:bg-black/20 overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 py-4 flex flex-col items-center gap-2 text-xs font-bold transition-all relative ${
+                className={`flex-1 min-w-[100px] py-4 flex flex-col items-center gap-2 text-xs font-bold transition-all relative ${
                   activeTab === tab.id
                     ? "text-[#2B2B6A] dark:text-white"
                     : "text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900"
@@ -100,7 +108,7 @@ const FlightPayment = () => {
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#2B2B6A] to-purple-500"
+                    className="absolute bottom-0 left-0 w-full h-[3px] bg-linear-to-r from-[#2B2B6A] to-purple-500"
                   />
                 )}
               </button>
@@ -211,15 +219,84 @@ const FlightPayment = () => {
                     </p>
                   </div>
                 )}
+
+                {activeTab === "bsp" && (
+                  <div className="space-y-4">
+                    <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+                      <p className="font-bold mb-1">Agency Settlement (BSP)</p>
+                      <p className="text-xs">
+                        The amount will be settled via your agency&apos;s BSP
+                        clearing account or credit limit.
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-gray-400">
+                        IATA Number
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="12345678"
+                        className="w-full px-4 py-3 bg-white/50 dark:bg-black/50 rounded-xl border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 outline-none transition-all dark:text-white font-medium"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-gray-400">
+                        Agency Reference
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="REF-2024-001"
+                        className="w-full px-4 py-3 bg-white/50 dark:bg-black/50 rounded-xl border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 outline-none transition-all dark:text-white font-medium"
+                      />
+                    </div>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
 
+            {/* Ticketing Options */}
+            <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-4">
+                Ticketing Options
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => setTicketingOption("issue")}
+                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                    ticketingOption === "issue"
+                      ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
+                      : "border-gray-200 dark:border-gray-700 opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <div className="font-bold text-sm text-gray-900 dark:text-white">
+                    Issue Ticket Now
+                  </div>
+                  <div className="text-xs text-gray-500">Immediate Payment</div>
+                </button>
+                <button
+                  onClick={() => setTicketingOption("hold")}
+                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                    ticketingOption === "hold"
+                      ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
+                      : "border-gray-200 dark:border-gray-700 opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <div className="font-bold text-sm text-gray-900 dark:text-white">
+                    Hold PNR
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Book & Ticket Later
+                  </div>
+                </button>
+              </div>
+            </div>
+
             {/* Secure Badge */}
-            <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 grayscale opacity-60">
+            <div className="flex items-center justify-center gap-4 mt-6 grayscale opacity-60">
               <div className="font-bold text-xs text-gray-400">VISA</div>
               <div className="font-bold text-xs text-gray-400">Mastercard</div>
               <div className="font-bold text-xs text-gray-400">PayPal</div>
-              <div className="font-bold text-xs text-gray-400">Stripe</div>
+              <div className="font-bold text-xs text-gray-400">BSP</div>
             </div>
 
             {/* Pay Button */}
@@ -228,13 +305,16 @@ const FlightPayment = () => {
               whileTap={{ scale: 0.98 }}
               onClick={handlePay}
               disabled={loading}
-              className="w-full mt-6 py-4 bg-gradient-to-r from-[#2B2B6A] to-purple-800 text-white font-bold rounded-xl shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
+              className="w-full mt-6 py-4 bg-linear-to-r from-[#2B2B6A] to-purple-800 text-white font-bold rounded-xl shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
             >
               {loading ? (
                 <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  Pay Securely <ArrowRight className="w-5 h-5" />
+                  {ticketingOption === "hold"
+                    ? "Confirm Booking (Hold)"
+                    : "Pay Securely"}{" "}
+                  <ArrowRight className="w-5 h-5" />
                 </>
               )}
             </motion.button>

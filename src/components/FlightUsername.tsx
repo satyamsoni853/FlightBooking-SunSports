@@ -101,7 +101,7 @@ const FlightUsername = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-white/20 dark:border-white/10 sticky top-24"
+              className="bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl border border-white/20 dark:border-white/10 static md:sticky top-24"
             >
               <h3 className="text-lg font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-100 dark:border-gray-800 pb-2">
                 Flight Details
@@ -171,7 +171,7 @@ const FlightUsername = () => {
               transition={{ delay: 0.2 }}
               className="bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/20 dark:border-white/10"
             >
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2B2B6A] to-purple-600 dark:from-white dark:to-purple-300 mb-8">
+              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-[#2B2B6A] to-purple-600 dark:from-white dark:to-purple-300 mb-8">
                 Passenger Details
               </h2>
 
@@ -241,6 +241,138 @@ const FlightUsername = () => {
                       className="w-full px-4 py-3 bg-white/50 dark:bg-black/50 rounded-xl border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
                       placeholder="A12345678"
                     />
+                  </div>
+                </div>
+
+                <div className="pt-8 border-t border-gray-100 dark:border-gray-800">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+                    Ancillary Services
+                  </h3>
+
+                  <div className="space-y-6">
+                    {/* Baggage */}
+                    <div className="p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-800">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M6 20h0a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h0" />
+                            <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" />
+                          </svg>
+                        </div>
+                        <h4 className="font-bold text-gray-900 dark:text-white">
+                          Baggage Preference
+                        </h4>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-purple-500 transition-colors bg-white dark:bg-black/20">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                          />
+                          <div>
+                            <div className="font-bold text-sm text-gray-800 dark:text-gray-200">
+                              Extra Checked Bag (23kg)
+                            </div>
+                            <div className="text-xs text-gray-500">+$45.00</div>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-purple-500 transition-colors bg-white dark:bg-black/20">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                          />
+                          <div>
+                            <div className="font-bold text-sm text-gray-800 dark:text-gray-200">
+                              Heavy Bag (32kg)
+                            </div>
+                            <div className="text-xs text-gray-500">+$75.00</div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Meal Selection */}
+                    <div className="p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-800">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+                            <path d="M7 2v20" />
+                            <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3a2 2 0 0 0 2-2z" />
+                          </svg>
+                        </div>
+                        <h4 className="font-bold text-gray-900 dark:text-white">
+                          Meal Preference
+                        </h4>
+                      </div>
+                      <select className="w-full px-4 py-3 bg-white dark:bg-black/20 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm">
+                        <option value="standard">Standard Meal</option>
+                        <option value="veg">Vegetarian (VGML)</option>
+                        <option value="vegan">Vegan (VLML)</option>
+                        <option value="gluten-free">Gluten Free (GFML)</option>
+                        <option value="halal">Halal (MOML)</option>
+                        <option value="kosher">Kosher (KSML)</option>
+                      </select>
+                    </div>
+
+                    {/* Seat Selection Placeholder */}
+                    <div className="p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-800">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg text-green-600 dark:text-green-400">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M19 9h2a2 2 0 0 1 0 4h-2" />
+                            <path d="M5 9H3a2 2 0 0 0 0 4h2" />
+                            <path d="M5 15v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1" />
+                            <path d="M9 19v2" />
+                            <path d="M15 19v2" />
+                            <path d="M12 15h0" />
+                            <path d="M2 12h20" />
+                            <path d="M4 12v-3a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v3" />
+                          </svg>
+                        </div>
+                        <h4 className="font-bold text-gray-900 dark:text-white">
+                          Seat Selection
+                        </h4>
+                      </div>
+                      <div className="flex items-center justify-between bg-white dark:bg-black/20 p-4 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
+                        <div className="text-sm text-gray-500">
+                          No seat selected
+                        </div>
+                        <button
+                          type="button"
+                          className="text-sm font-bold text-[#2B2B6A] dark:text-purple-400 hover:underline"
+                        >
+                          Select Seat map
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 

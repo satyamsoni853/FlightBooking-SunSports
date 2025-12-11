@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "../app/ThemeContext";
+import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sun,
@@ -13,14 +14,15 @@ import {
   Tag,
   Menu,
   X,
+  LogIn,
 } from "lucide-react";
 
 // 1. Custom Golden Shadow Utility
 const GOLDEN_SHADOW = "inset 0 6px 20px 0 rgba(218, 165, 32, 0.3)";
 
-
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const { user, logout, isAuthenticated } = useAuth();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -30,6 +32,8 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Flights", href: "/flights/results" },
+    { name: "Cars", href: "/cars" },
+    { name: "Hotels", href: "/hotels" },
     { name: "Popular Routes", href: "/popular-routes" },
   ];
 
@@ -75,7 +79,6 @@ const Navbar = () => {
                   className="object-contain drop-shadow-md"
                 />
               </div>
-              {/* Removed: <span ...> Voyage </span> */}
             </Link>
 
             {/* Desktop Navigation */}
@@ -123,82 +126,105 @@ const Navbar = () => {
                 </AnimatePresence>
               </button>
 
-              {/* Profile Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={toggleProfile}
-                  className="flex items-center justify-center w-11 h-11 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20 hover:scale-105 transition-transform duration-300"
-                >
-                  <User className="w-5 h-5" />
-                </button>
+              {/* Profile Dropdown or Login Button */}
+              {isAuthenticated && user ? (
+                <div className="relative">
+                  <button
+                    onClick={toggleProfile}
+                    className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20 hover:scale-105 transition-transform duration-300"
+                  >
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-6 h-6 rounded-full bg-white/20"
+                    />
+                    <span className="text-xs font-bold pr-1">{user.name}</span>
+                  </button>
 
-                <AnimatePresence>
-                  {isProfileOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className={`absolute right-0 mt-4 w-64 rounded-2xl py-2 backdrop-blur-2xl z-50 ${glassDropdown}`}
-                    >
-                      <div
-                        className={`px-5 py-4 border-b ${
-                          isDarkMode
-                            ? "border-gray-800/50"
-                            : "border-gray-100/10"
-                        }`}
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className={`absolute right-0 mt-4 w-64 rounded-2xl py-2 backdrop-blur-2xl z-50 ${glassDropdown}`}
                       >
-                        <p className="text-sm font-semibold">John Doe</p>
-                        <p className="text-xs text-gray-500 truncate mt-0.5">
-                          john.doe@example.com
-                        </p>
-                      </div>
-
-                      <div className="py-2 px-2">
-                        {profileLinks.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-colors ${
-                              isDarkMode
-                                ? "hover:bg-white/10 text-gray-300 hover:text-white"
-                                : "hover:bg-purple-50/50 text-gray-600 hover:text-purple-700"
-                            }`}
-                            onClick={() => setIsProfileOpen(false)}
-                          >
-                            <item.icon
-                              className={`w-4 h-4 ${
-                                isDarkMode ? "text-purple-400" : "text-purple-500"
-                              }`}
-                            />
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-
-                      <div
-                        className={`border-t pt-2 pb-2 px-2 ${
-                          isDarkMode
-                            ? "border-gray-800/50"
-                            : "border-gray-100/10"
-                        }`}
-                      >
-                        <button
-                          className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg text-red-500 transition-colors ${
+                        <div
+                          className={`px-5 py-4 border-b ${
                             isDarkMode
-                              ? "hover:bg-red-500/10"
-                              : "hover:bg-red-50/50"
+                              ? "border-gray-800/50"
+                              : "border-gray-100/10"
                           }`}
-                          onClick={() => setIsProfileOpen(false)}
                         >
-                          <LogOut className="w-4 h-4" />
-                          Sign Out
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                          <p className="text-sm font-semibold">{user.name}</p>
+                          <p className="text-xs text-gray-500 truncate mt-0.5">
+                            {user.email}
+                          </p>
+                          <p className="text-[10px] uppercase font-bold text-purle-500 mt-1 bg-purple-100 dark:bg-purple-900/30 inline-block px-1.5 py-0.5 rounded text-purple-600 dark:text-purple-300">
+                            {user.role}
+                          </p>
+                        </div>
+
+                        <div className="py-2 px-2">
+                          {profileLinks.map((item) => (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className={`flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg transition-colors ${
+                                isDarkMode
+                                  ? "hover:bg-white/10 text-gray-300 hover:text-white"
+                                  : "hover:bg-purple-50/50 text-gray-600 hover:text-purple-700"
+                              }`}
+                              onClick={() => setIsProfileOpen(false)}
+                            >
+                              <item.icon
+                                className={`w-4 h-4 ${
+                                  isDarkMode
+                                    ? "text-purple-400"
+                                    : "text-purple-500"
+                                }`}
+                              />
+                              {item.name}
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div
+                          className={`border-t pt-2 pb-2 px-2 ${
+                            isDarkMode
+                              ? "border-gray-800/50"
+                              : "border-gray-100/10"
+                          }`}
+                        >
+                          <button
+                            className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg text-red-500 transition-colors ${
+                              isDarkMode
+                                ? "hover:bg-red-500/10"
+                                : "hover:bg-red-50/50"
+                            }`}
+                            onClick={() => {
+                              logout();
+                              setIsProfileOpen(false);
+                            }}
+                          >
+                            <LogOut className="w-4 h-4" />
+                            Sign Out
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold text-sm shadow-lg transition-all"
+                >
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -266,30 +292,61 @@ const Navbar = () => {
 
                 {/* Mobile Profile Links */}
                 <div className="pt-4 mt-2 border-t border-gray-200/10 dark:border-gray-800/50">
-                  {profileLinks.map((item) => (
+                  {isAuthenticated && user ? (
+                    <>
+                      <div className="px-4 py-2 mb-2 flex items-center gap-3">
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <div>
+                          <p className="text-sm font-bold text-gray-800 dark:text-white">
+                            {user.name}
+                          </p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
+                        </div>
+                      </div>
+                      {profileLinks.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                            isDarkMode
+                              ? "text-gray-300 hover:bg-white/10"
+                              : "text-gray-700 hover:bg-gray-50/50"
+                          }`}
+                          onClick={toggleMobileMenu}
+                        >
+                          <item.icon className="w-4 h-4 text-purple-500" />
+                          {item.name}
+                        </Link>
+                      ))}
+                      <button
+                        className={`flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 w-full text-left rounded-lg transition-colors ${
+                          isDarkMode
+                            ? "hover:bg-red-900/10"
+                            : "hover:bg-red-50/50"
+                        }`}
+                        onClick={() => {
+                          logout();
+                          toggleMobileMenu();
+                        }}
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
                     <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                        isDarkMode
-                          ? "text-gray-300 hover:bg-white/10"
-                          : "text-gray-700 hover:bg-gray-50/50"
-                      }`}
+                      href="/login"
                       onClick={toggleMobileMenu}
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#2B2B6A] text-white font-bold rounded-xl"
                     >
-                      <item.icon className="w-4 h-4 text-purple-500" />
-                      {item.name}
+                      <LogIn className="w-4 h-4" />
+                      Sign In
                     </Link>
-                  ))}
-                  <button
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 w-full text-left rounded-lg transition-colors ${
-                      isDarkMode ? "hover:bg-red-900/10" : "hover:bg-red-50/50"
-                    }`}
-                    onClick={toggleMobileMenu}
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Sign Out
-                  </button>
+                  )}
                 </div>
               </div>
             </motion.div>

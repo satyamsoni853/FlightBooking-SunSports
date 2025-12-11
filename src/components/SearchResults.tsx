@@ -104,6 +104,18 @@ const SearchResults = () => {
   const from = searchParams.get("from") || "Anywhere";
   const to = searchParams.get("to") || "Anywhere";
   const flights = ALL_FLIGHTS;
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState(false);
+
+  // Mock Date Strip Data
+  const dates = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return {
+      date: d.toLocaleDateString("en-US", { weekday: "short", day: "numeric" }),
+      price: `$${800 + i * 50}`,
+      isActive: i === 0,
+    };
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#050505] pt-32 px-4 pb-20 transition-colors duration-500 relative overflow-hidden">
@@ -123,7 +135,7 @@ const SearchResults = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Search Header */}
-        <div className="mb-12 text-center md:text-left">
+        <div className="mb-8 text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,106 +145,126 @@ const SearchResults = () => {
             <span>Found {flights.length} Premium Flights</span>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col md:flex-row items-center gap-6 text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight"
-          >
-            <span className="relative">
-              {from.split("(")[0]}
-              <span className="absolute -bottom-2 left-0 w-full h-2 bg-purple-500/20 rounded-full blur-sm"></span>
-            </span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <motion.div
-              animate={{ x: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col md:flex-row items-center gap-6 text-2xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight text-center md:text-left"
             >
-              <ArrowRight className="w-8 h-8 md:w-16 md:h-16 text-gray-300 dark:text-gray-700" />
+              <span className="relative">
+                {from.split("(")[0]}
+                <span className="absolute -bottom-2 left-0 w-full h-2 bg-purple-500/20 rounded-full blur-sm"></span>
+              </span>
+              <motion.div
+                animate={{ x: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <ArrowRight className="w-6 h-6 md:w-12 md:h-12 text-gray-300 dark:text-gray-700 max-md:rotate-90" />
+              </motion.div>
+              <span className="relative text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-blue-500">
+                {to.split("(")[0]}
+              </span>
             </motion.div>
-            <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">
-              {to.split("(")[0]}
-            </span>
-          </motion.div>
+
+            <div className="flex flex-wrap justify-center items-center gap-3">
+              <span className="text-sm font-bold text-gray-500 dark:text-gray-400 hidden md:inline">
+                Sort By:
+              </span>
+              <select className="px-4 py-2 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl text-sm font-bold text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Duration: Shortest</option>
+                <option>Departure time</option>
+                <option>Arrival time</option>
+              </select>
+              {/* Mobile Filter Toggle */}
+              <button
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden px-4 py-2 bg-purple-600 text-white rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg shadow-purple-500/20"
+              >
+                <Filter className="w-4 h-4" /> Filters
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Date Carousel */}
+        <div className="mb-8 overflow-x-auto pb-4 no-scrollbar">
+          <div className="flex gap-4 min-w-max">
+            {dates.map((item, idx) => (
+              <motion.button
+                key={idx}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex flex-col items-center justify-center w-24 h-20 rounded-2xl border transition-all ${
+                  item.isActive
+                    ? "bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-500/30"
+                    : "bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-purple-500/50"
+                }`}
+              >
+                <span className="text-xs font-bold opacity-80">
+                  {item.date}
+                </span>
+                <span
+                  className={`text-sm font-black ${
+                    item.isActive
+                      ? "text-white"
+                      : "text-gray-900 dark:text-white"
+                  }`}
+                >
+                  {item.price}
+                </span>
+              </motion.button>
+            ))}
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
+          {/* Filters Sidebar - Desktop */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
             className="hidden lg:block w-1/4 h-fit sticky top-32"
           >
-            <div className="bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/20 dark:border-white/10">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-white">
-                  <Filter className="w-5 h-5 text-purple-500" /> Filters
-                </div>
-                <button className="text-xs font-bold text-gray-400 hover:text-purple-500 transition-colors">
-                  Reset
-                </button>
-              </div>
-
-              <div className="space-y-8">
-                <div>
-                  <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
-                    Stops
-                  </h4>
-                  <div className="space-y-3">
-                    {["Non-stop", "1 Stop", "2+ Stops"].map((opt) => (
-                      <label
-                        key={opt}
-                        className="flex items-center gap-3 cursor-pointer group"
-                      >
-                        <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
-                          <input
-                            type="checkbox"
-                            className="peer appearance-none w-full h-full cursor-pointer"
-                          />
-                          <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
-                        </div>
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                          {opt}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="h-px bg-gray-200 dark:bg-white/10"></div>
-
-                <div>
-                  <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
-                    Airlines
-                  </h4>
-                  <div className="space-y-3">
-                    {[
-                      "Emirates",
-                      "Delta",
-                      "Qatar Airways",
-                      "Singapore Air",
-                    ].map((opt) => (
-                      <label
-                        key={opt}
-                        className="flex items-center gap-3 cursor-pointer group"
-                      >
-                        <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
-                          <input
-                            type="checkbox"
-                            className="peer appearance-none w-full h-full cursor-pointer"
-                          />
-                          <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
-                        </div>
-                        <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                          {opt}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <FilterContent />
           </motion.div>
+
+          {/* Mobile Filter Drawer */}
+          {isMobileFilterOpen && (
+            <div className="fixed inset-0 z-50 lg:hidden">
+              <div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={() => setIsMobileFilterOpen(false)}
+              />
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                className="absolute right-0 top-0 bottom-0 w-80 bg-white dark:bg-[#111] p-6 overflow-y-auto shadow-2xl"
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    Filters
+                  </h2>
+                  <button
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <FilterContent />
+                <button
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="w-full mt-8 py-3 bg-purple-600 text-white font-bold rounded-xl"
+                >
+                  Apply Filters
+                </button>
+              </motion.div>
+            </div>
+          )}
 
           {/* Results List */}
           <motion.div
@@ -250,6 +282,105 @@ const SearchResults = () => {
     </div>
   );
 };
+
+// Extracted Filter Content for reusability
+const FilterContent = () => (
+  <div className="bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/20 dark:border-white/10">
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-white">
+        <Filter className="w-5 h-5 text-purple-500" /> Filters
+      </div>
+      <button className="text-xs font-bold text-gray-400 hover:text-purple-500 transition-colors">
+        Reset
+      </button>
+    </div>
+
+    <div className="space-y-8">
+      <div>
+        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
+          Stops
+        </h4>
+        <div className="space-y-3">
+          {["Non-stop", "1 Stop", "2+ Stops"].map((opt) => (
+            <label
+              key={opt}
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
+                <input
+                  type="checkbox"
+                  className="peer appearance-none w-full h-full cursor-pointer"
+                />
+                <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
+              </div>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                {opt}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+
+      <div>
+        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
+          Cabin Class
+        </h4>
+        <div className="space-y-3">
+          {["Economy", "Premium Economy", "Business", "First Class"].map(
+            (opt) => (
+              <label
+                key={opt}
+                className="flex items-center gap-3 cursor-pointer group"
+              >
+                <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="peer appearance-none w-full h-full cursor-pointer"
+                  />
+                  <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
+                </div>
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  {opt}
+                </span>
+              </label>
+            )
+          )}
+        </div>
+      </div>
+
+      <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+
+      <div>
+        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
+          Airlines
+        </h4>
+        <div className="space-y-3">
+          {["Emirates", "Delta", "Qatar Airways", "Singapore Air"].map(
+            (opt) => (
+              <label
+                key={opt}
+                className="flex items-center gap-3 cursor-pointer group"
+              >
+                <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="peer appearance-none w-full h-full cursor-pointer"
+                  />
+                  <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
+                </div>
+                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  {opt}
+                </span>
+              </label>
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 interface SearchFlightData {
   id: number;

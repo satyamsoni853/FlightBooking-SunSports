@@ -202,14 +202,14 @@ const FlightsPage = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-[600px] w-full bg-gradient-to-r from-[#2B2B6A] to-purple-900 overflow-hidden rounded-b-[50px] shadow-2xl">
+      <div className="relative h-[500px] md:h-[600px] w-full bg-gradient-to-r from-[#2B2B6A] to-purple-900 overflow-hidden rounded-b-[30px] md:rounded-b-[50px] shadow-2xl">
         {/* Animated Particles/Gradient Overlay */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
-          className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"
+          className="absolute inset-0 bg-linear-to-b from-transparent to-black/60"
         />
 
         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -226,10 +226,10 @@ const FlightsPage = () => {
             </motion.div>
             <motion.h1
               variants={itemVariants}
-              className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight"
+              className="text-4xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight"
             >
               Explore the{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-yellow-200">
                 World
               </span>{" "}
               Without Limits
@@ -262,7 +262,7 @@ const FlightsPage = () => {
       </div>
 
       {/* Glassmorphic Search Widget */}
-      <div className="max-w-6xl mx-auto px-4 -mt-32 relative z-20">
+      <div className="max-w-6xl mx-auto px-4 -mt-24 md:-mt-32 relative z-20">
         <motion.div
           initial={{ y: 50, opacity: 0, scale: 0.95 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
@@ -299,151 +299,254 @@ const FlightsPage = () => {
           </div>
 
           {/* Search Form */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-            {/* From */}
-            <div className="md:col-span-3 space-y-2 relative" ref={fromRef}>
-              <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
-                From
-              </label>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
-                  <Plane className="w-5 h-5 rotate-[-45deg]" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="City or Airport"
-                  value={fromQuery}
-                  onChange={(e) => handleSearchInput(e.target.value, "from")}
-                  onFocus={() => fromQuery && setShowFromSuggestions(true)}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
-                />
-              </div>
-              {/* Autocomplete Dropdown */}
-              <AnimatePresence>
-                {showFromSuggestions && fromSuggestions.length > 0 && (
-                  <motion.ul
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto"
+          <div className="space-y-6">
+            {activeTab === "multi-city" ? (
+              <div className="space-y-4">
+                {[0, 1].map((index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end border-b border-gray-100 dark:border-gray-800 pb-4 last:border-0 last:pb-0"
                   >
-                    {fromSuggestions.map((airport) => (
-                      <li
-                        key={airport.code}
-                        onClick={() => handleSelectAirport(airport, "from")}
-                        className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center group"
-                      >
-                        <div>
-                          <div className="font-bold text-gray-800 dark:text-white">
-                            {airport.city}, {airport.country}
-                          </div>
-                          <div className="text-xs text-gray-400">
-                            {airport.name}
-                          </div>
+                    <div className="md:col-span-1 flex items-center justify-center font-bold text-gray-400 text-sm">
+                      Flight {index + 1}
+                    </div>
+                    {/* From */}
+                    <div className="md:col-span-3 space-y-2 relative">
+                      <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                        From
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                          <Plane className="w-5 h-5 -rotate-45" />
                         </div>
-                        <span className="text-sm font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-md">
-                          {airport.code}
-                        </span>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
+                        <input
+                          type="text"
+                          placeholder="City or Airport"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                        />
+                      </div>
+                    </div>
 
-            {/* Swap Icon (Visual Only) */}
-            <div className="hidden md:flex md:col-span-1 justify-center items-center pb-3">
-              <button
-                onClick={() => {
-                  const temp = fromQuery;
-                  setFromQuery(toQuery);
-                  setToQuery(temp);
-                }}
-                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors transform hover:rotate-180 duration-500"
-              >
-                <ArrowRight className="w-4 h-4 text-gray-500" />
-              </button>
-            </div>
+                    {/* To */}
+                    <div className="md:col-span-3 space-y-2 relative">
+                      <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                        To
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                          <MapPin className="w-5 h-5" />
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="City or Airport"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                        />
+                      </div>
+                    </div>
 
-            {/* To */}
-            <div className="md:col-span-3 space-y-2 relative" ref={toRef}>
-              <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
-                To
-              </label>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="City or Airport"
-                  value={toQuery}
-                  onChange={(e) => handleSearchInput(e.target.value, "to")}
-                  onFocus={() => toQuery && setShowToSuggestions(true)}
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
-                />
-              </div>
-              {/* Autocomplete Dropdown */}
-              <AnimatePresence>
-                {showToSuggestions && toSuggestions.length > 0 && (
-                  <motion.ul
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto"
+                    {/* Date */}
+                    <div className="md:col-span-3 space-y-2">
+                      <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                        Date
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                          <Calendar className="w-5 h-5" />
+                        </div>
+                        <input
+                          type="date"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="flex justify-end pt-2">
+                  <motion.button
+                    onClick={handleSearchSubmit}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-8 py-3 bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
                   >
-                    {toSuggestions.map((airport) => (
-                      <li
-                        key={airport.code}
-                        onClick={() => handleSelectAirport(airport, "to")}
-                        className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center group"
-                      >
-                        <div>
-                          <div className="font-bold text-gray-800 dark:text-white">
-                            {airport.city}, {airport.country}
-                          </div>
-                          <div className="text-xs text-gray-400">
-                            {airport.name}
-                          </div>
-                        </div>
-                        <span className="text-sm font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-md">
-                          {airport.code}
-                        </span>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Departure */}
-            <div className="md:col-span-3 space-y-2">
-              <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
-                Departure
-              </label>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
-                  <Calendar className="w-5 h-5" />
+                    <Search className="w-5 h-5" />
+                    <span>Search Multi-City</span>
+                  </motion.button>
                 </div>
-                <input
-                  type="date"
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
-                />
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                {/* From */}
+                <div className="md:col-span-3 space-y-2 relative" ref={fromRef}>
+                  <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                    From
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                      <Plane className="w-5 h-5 -rotate-45" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="City or Airport"
+                      value={fromQuery}
+                      onChange={(e) =>
+                        handleSearchInput(e.target.value, "from")
+                      }
+                      onFocus={() => fromQuery && setShowFromSuggestions(true)}
+                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                    />
+                  </div>
+                  {/* Autocomplete Dropdown */}
+                  <AnimatePresence>
+                    {showFromSuggestions && fromSuggestions.length > 0 && (
+                      <motion.ul
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto"
+                      >
+                        {fromSuggestions.map((airport) => (
+                          <li
+                            key={airport.code}
+                            onClick={() => handleSelectAirport(airport, "from")}
+                            className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center group"
+                          >
+                            <div>
+                              <div className="font-bold text-gray-800 dark:text-white">
+                                {airport.city}, {airport.country}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {airport.name}
+                              </div>
+                            </div>
+                            <span className="text-sm font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-md">
+                              {airport.code}
+                            </span>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </div>
 
-            {/* Search Button */}
-            <div className="md:col-span-2">
-              <motion.button
-                onClick={handleSearchSubmit}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full h-[56px] bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
-              >
-                <Search className="w-5 h-5" />
-                <span>Search</span>
-              </motion.button>
-            </div>
+                {/* Swap Icon (Visual Only) */}
+                <div className="hidden md:flex md:col-span-1 justify-center items-center pb-3">
+                  <button
+                    onClick={() => {
+                      const temp = fromQuery;
+                      setFromQuery(toQuery);
+                      setToQuery(temp);
+                    }}
+                    className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors transform hover:rotate-180 duration-500"
+                  >
+                    <ArrowRight className="w-4 h-4 text-gray-500" />
+                  </button>
+                </div>
+
+                {/* To */}
+                <div className="md:col-span-3 space-y-2 relative" ref={toRef}>
+                  <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                    To
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="City or Airport"
+                      value={toQuery}
+                      onChange={(e) => handleSearchInput(e.target.value, "to")}
+                      onFocus={() => toQuery && setShowToSuggestions(true)}
+                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                    />
+                  </div>
+                  {/* Autocomplete Dropdown */}
+                  <AnimatePresence>
+                    {showToSuggestions && toSuggestions.length > 0 && (
+                      <motion.ul
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden max-h-64 overflow-y-auto"
+                      >
+                        {toSuggestions.map((airport) => (
+                          <li
+                            key={airport.code}
+                            onClick={() => handleSelectAirport(airport, "to")}
+                            className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer flex justify-between items-center group"
+                          >
+                            <div>
+                              <div className="font-bold text-gray-800 dark:text-white">
+                                {airport.city}, {airport.country}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {airport.name}
+                              </div>
+                            </div>
+                            <span className="text-sm font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded-md">
+                              {airport.code}
+                            </span>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Departure & Return */}
+                <div
+                  className={`md:col-span-3 grid ${
+                    activeTab === "round-trip" ? "grid-cols-2" : "grid-cols-1"
+                  } gap-2`}
+                >
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                      Departure
+                    </label>
+                    <div className="relative group">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                        <Calendar className="w-5 h-5" />
+                      </div>
+                      <input
+                        type="date"
+                        className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                      />
+                    </div>
+                  </div>
+
+                  {activeTab === "round-trip" && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-yellow-500 uppercase tracking-wide ml-1">
+                        Return
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                          <Calendar className="w-5 h-5" />
+                        </div>
+                        <input
+                          type="date"
+                          className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Search Button */}
+                <div className="md:col-span-2">
+                  <motion.button
+                    onClick={handleSearchSubmit}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full h-[56px] bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Search className="w-5 h-5" />
+                    <span>Search</span>
+                  </motion.button>
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
@@ -530,11 +633,11 @@ const FlightCard = ({
       className="group bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-900/20 border border-gray-100 dark:border-gray-800 transition-all duration-300 relative overflow-hidden cursor-pointer"
     >
       {/* Glow Effect on Hover */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      <div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
       <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
         {/* Airline Info */}
-        <div className="flex-shrink-0 flex flex-col items-center gap-3 w-24">
+        <div className="shrink-0 flex flex-col items-center gap-3 w-24">
           <div
             className={`w-14 h-14 ${data.logoColor} text-white rounded-2xl flex items-center justify-center shadow-md transform group-hover:rotate-12 transition-transform duration-300`}
           >
@@ -548,7 +651,7 @@ const FlightCard = ({
         </div>
 
         {/* Flight Timeline */}
-        <div className="flex-grow grid grid-cols-3 gap-4 w-full items-center">
+        <div className="grow grid grid-cols-3 gap-4 w-full items-center">
           <div className="text-center md:text-left">
             <div className="text-2xl font-bold text-gray-800 dark:text-white">
               {data.timeStart}
@@ -629,9 +732,9 @@ const FlightDetailsModal = ({
       >
         <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto pointer-events-auto border border-gray-200 dark:border-gray-700 relative flex flex-col">
           {/* Header Image / Pattern */}
-          <div className="h-32 bg-[#2B2B6A] relative overflow-hidden flex-shrink-0">
+          <div className="h-32 bg-[#2B2B6A] relative overflow-hidden shrink-0">
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#2B2B6A] to-purple-800 opacity-90"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-[#2B2B6A] to-purple-800 opacity-90"></div>
             <button
               onClick={onClose}
               className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors"
