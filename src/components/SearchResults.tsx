@@ -1,7 +1,19 @@
 "use client";
 import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Plane, ArrowRight, Filter, Star, Clock } from "lucide-react";
+import {
+  Plane,
+  ArrowRight,
+  Filter,
+  Star,
+  Clock,
+  DollarSign,
+  Sun,
+  Moon,
+  Sunrise,
+  Sunset,
+  ChevronDown,
+} from "lucide-react";
 import { motion, Variants } from "framer-motion";
 
 // Reusing the same mock data for demo purposes
@@ -103,8 +115,52 @@ const SearchResults = () => {
   const searchParams = useSearchParams();
   const from = searchParams.get("from") || "Anywhere";
   const to = searchParams.get("to") || "Anywhere";
-  const flights = ALL_FLIGHTS;
+  const cabinClass = searchParams.get("cabinClass") || "Economy";
+  const travelers =
+    (Number(searchParams.get("adults")) || 1) +
+    (Number(searchParams.get("children")) || 0);
+
+  // Filter State
+  const [maxPrice, setMaxPrice] = React.useState(2000);
+  const [selectedTimes, setSelectedTimes] = React.useState<string[]>([]);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState(false);
+  const [sortOption, setSortOption] = React.useState("Price: Low to High");
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = React.useState(false);
+
+  // Filter Logic
+  const filteredFlights = React.useMemo(() => {
+    return ALL_FLIGHTS.filter((flight) => {
+      // Price Filter
+      const priceVal = parseInt(flight.price.replace(/[$,]/g, ""));
+      if (priceVal > maxPrice) return false;
+
+      // Time Filter
+      if (selectedTimes.length > 0) {
+        const timeParts = flight.timeStart.match(/(\d+):(\d+) (AM|PM)/);
+        if (timeParts) {
+          let hours = parseInt(timeParts[1]);
+          const ampm = timeParts[3];
+          if (ampm === "PM" && hours !== 12) hours += 12;
+          if (ampm === "AM" && hours === 12) hours = 0;
+
+          const isMorning = hours >= 5 && hours < 12;
+          const isAfternoon = hours >= 12 && hours < 17;
+          const isEvening = hours >= 17 && hours < 21;
+          const isNight = hours >= 21 || hours < 5;
+
+          const match =
+            (selectedTimes.includes("Morning") && isMorning) ||
+            (selectedTimes.includes("Afternoon") && isAfternoon) ||
+            (selectedTimes.includes("Evening") && isEvening) ||
+            (selectedTimes.includes("Night") && isNight);
+          if (!match) return false;
+        }
+      }
+      return true;
+    });
+  }, [maxPrice, selectedTimes]);
+
+  const flights = filteredFlights;
 
   // Mock Date Strip Data
   const dates = Array.from({ length: 7 }, (_, i) => {
@@ -142,7 +198,10 @@ const SearchResults = () => {
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-full text-sm font-bold text-gray-500 dark:text-gray-400 mb-6 shadow-sm"
           >
             <Plane className="w-4 h-4 text-purple-500" />
-            <span>Found {flights.length} Premium Flights</span>
+            <span>
+              Found {flights.length} {cabinClass} Flights • {travelers} Traveler
+              {travelers > 1 ? "s" : ""}
+            </span>
           </motion.div>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -171,13 +230,48 @@ const SearchResults = () => {
               <span className="text-sm font-bold text-gray-500 dark:text-gray-400 hidden md:inline">
                 Sort By:
               </span>
-              <select className="px-4 py-2 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl text-sm font-bold text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Duration: Shortest</option>
-                <option>Departure time</option>
-                <option>Arrival time</option>
-              </select>
+              <div className="relative z-30">
+                <button
+                  onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl text-sm font-bold text-gray-700 dark:text-white hover:border-purple-500 transition-colors"
+                >
+                  <span>{sortOption}</span>
+                  <ChevronDown className="w-4 h-4 text-purple-500" />
+                </button>
+                <div className="relative">
+                  {isSortDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    >
+                      {[
+                        "Price: Low to High",
+                        "Price: High to Low",
+                        "Duration: Shortest",
+                        "Departure time",
+                        "Arrival time",
+                      ].map((opt) => (
+                        <button
+                          key={opt}
+                          onClick={() => {
+                            setSortOption(opt);
+                            setIsSortDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-3 text-sm font-bold transition-colors ${
+                            sortOption === opt
+                              ? "bg-[#2B2B6A] text-white dark:bg-yellow-400 dark:text-black"
+                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              </div>
               {/* Mobile Filter Toggle */}
               <button
                 onClick={() => setIsMobileFilterOpen(true)}
@@ -228,7 +322,12 @@ const SearchResults = () => {
             transition={{ delay: 0.4 }}
             className="hidden lg:block w-1/4 h-fit sticky top-32"
           >
-            <FilterContent />
+            <FilterContent
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
+              selectedTimes={selectedTimes}
+              setSelectedTimes={setSelectedTimes}
+            />
           </motion.div>
 
           {/* Mobile Filter Drawer */}
@@ -255,7 +354,12 @@ const SearchResults = () => {
                     ✕
                   </button>
                 </div>
-                <FilterContent />
+                <FilterContent
+                  maxPrice={maxPrice}
+                  setMaxPrice={setMaxPrice}
+                  selectedTimes={selectedTimes}
+                  setSelectedTimes={setSelectedTimes}
+                />
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="w-full mt-8 py-3 bg-purple-600 text-white font-bold rounded-xl"
@@ -283,53 +387,106 @@ const SearchResults = () => {
   );
 };
 
-// Extracted Filter Content for reusability
-const FilterContent = () => (
-  <div className="bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/20 dark:border-white/10">
-    <div className="flex items-center justify-between mb-8">
-      <div className="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-white">
-        <Filter className="w-5 h-5 text-purple-500" /> Filters
-      </div>
-      <button className="text-xs font-bold text-gray-400 hover:text-purple-500 transition-colors">
-        Reset
-      </button>
-    </div>
+// Extracted Filter Content with Props
+interface FilterContentProps {
+  maxPrice: number;
+  setMaxPrice: (val: number) => void;
+  selectedTimes: string[];
+  setSelectedTimes: (val: React.SetStateAction<string[]>) => void;
+}
 
-    <div className="space-y-8">
-      <div>
-        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
-          Stops
-        </h4>
-        <div className="space-y-3">
-          {["Non-stop", "1 Stop", "2+ Stops"].map((opt) => (
-            <label
-              key={opt}
-              className="flex items-center gap-3 cursor-pointer group"
-            >
-              <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
-                <input
-                  type="checkbox"
-                  className="peer appearance-none w-full h-full cursor-pointer"
-                />
-                <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
-              </div>
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                {opt}
-              </span>
-            </label>
-          ))}
+const FilterContent = ({
+  maxPrice,
+  setMaxPrice,
+  selectedTimes,
+  setSelectedTimes,
+}: FilterContentProps) => {
+  const toggleTime = (time: string) => {
+    setSelectedTimes((prev) =>
+      prev.includes(time) ? prev.filter((t) => t !== time) : [...prev, time]
+    );
+  };
+
+  return (
+    <div className="bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-xl border border-white/20 dark:border-white/10">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-2 font-bold text-lg text-gray-800 dark:text-white">
+          <Filter className="w-5 h-5 text-purple-500" /> Filters
         </div>
+        <button
+          onClick={() => {
+            setMaxPrice(2000);
+            setSelectedTimes([]);
+          }}
+          className="text-xs font-bold text-gray-400 hover:text-purple-500 transition-colors"
+        >
+          Reset
+        </button>
       </div>
 
-      <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+      <div className="space-y-8">
+        {/* Price Range Filter */}
+        <div>
+          <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200 flex items-center gap-2">
+            <DollarSign className="w-4 h-4 text-gray-400" /> Max Price: $
+            {maxPrice}
+          </h4>
+          <input
+            type="range"
+            min="200"
+            max="2000"
+            step="50"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+          />
+          <div className="flex justify-between text-xs text-gray-400 font-bold mt-2">
+            <span>$200</span>
+            <span>$2,000</span>
+          </div>
+        </div>
 
-      <div>
-        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
-          Cabin Class
-        </h4>
-        <div className="space-y-3">
-          {["Economy", "Premium Economy", "Business", "First Class"].map(
-            (opt) => (
+        <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+
+        {/* Departure Time Filter */}
+        <div>
+          <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200 flex items-center gap-2">
+            <Clock className="w-4 h-4 text-gray-400" /> Departure Time
+          </h4>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: "Morning", icon: <Sunrise className="w-4 h-4" /> },
+              { label: "Afternoon", icon: <Sun className="w-4 h-4" /> },
+              { label: "Evening", icon: <Sunset className="w-4 h-4" /> },
+              { label: "Night", icon: <Moon className="w-4 h-4" /> },
+            ].map((item) => {
+              const isActive = selectedTimes.includes(item.label);
+              return (
+                <button
+                  key={item.label}
+                  onClick={() => toggleTime(item.label)}
+                  className={`flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-xl text-xs font-bold border transition-all ${
+                    isActive
+                      ? "bg-purple-600 border-purple-600 text-white"
+                      : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-purple-500/50"
+                  }`}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+
+        <div>
+          <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
+            Stops
+          </h4>
+          <div className="space-y-3">
+            {["Non-stop", "1 Stop", "2+ Stops"].map((opt) => (
               <label
                 key={opt}
                 className="flex items-center gap-3 cursor-pointer group"
@@ -345,42 +502,44 @@ const FilterContent = () => (
                   {opt}
                 </span>
               </label>
-            )
-          )}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="h-px bg-gray-200 dark:bg-white/10"></div>
+        <div className="h-px bg-gray-200 dark:bg-white/10"></div>
 
-      <div>
-        <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
-          Airlines
-        </h4>
-        <div className="space-y-3">
-          {["Emirates", "Delta", "Qatar Airways", "Singapore Air"].map(
-            (opt) => (
-              <label
-                key={opt}
-                className="flex items-center gap-3 cursor-pointer group"
-              >
-                <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
-                  <input
-                    type="checkbox"
-                    className="peer appearance-none w-full h-full cursor-pointer"
-                  />
-                  <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
-                </div>
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                  {opt}
-                </span>
-              </label>
-            )
-          )}
+        <div>
+          {/* Reusing existing sections but keeping them static for now as requested specific filters */}
+          <h4 className="font-bold mb-4 text-sm text-gray-900 dark:text-gray-200">
+            Cabin Class
+          </h4>
+          {/* Same checkbox logic for class */}
+          <div className="space-y-3">
+            {["Economy", "Premium Economy", "Business", "First Class"].map(
+              (opt) => (
+                <label
+                  key={opt}
+                  className="flex items-center gap-3 cursor-pointer group"
+                >
+                  <div className="relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-md group-hover:border-purple-500 transition-colors">
+                    <input
+                      type="checkbox"
+                      className="peer appearance-none w-full h-full cursor-pointer"
+                    />
+                    <div className="absolute hidden peer-checked:block w-3 h-3 bg-purple-500 rounded-sm"></div>
+                  </div>
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    {opt}
+                  </span>
+                </label>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 interface SearchFlightData {
   id: number;

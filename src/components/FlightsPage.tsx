@@ -13,6 +13,11 @@ import {
   Wifi,
   Coffee,
   Tv,
+  Users,
+  Armchair,
+  Minus,
+  Plus,
+  ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { AIRPORTS } from "@/constants/airports";
@@ -97,11 +102,20 @@ const FlightsPage = () => {
   const [fromSuggestions, setFromSuggestions] = useState<typeof AIRPORTS>([]);
   const [toSuggestions, setToSuggestions] = useState<typeof AIRPORTS>([]);
   const [showFromSuggestions, setShowFromSuggestions] = useState(false);
+
   const [showToSuggestions, setShowToSuggestions] = useState(false);
+
+  // Travelers & Class State
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [cabinClass, setCabinClass] = useState("Economy");
+  const [showTravelersDropdown, setShowTravelersDropdown] = useState(false);
+  const [showClassDropdown, setShowClassDropdown] = useState(false);
 
   // Click outside to close suggestions
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
+  const travelersRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -110,6 +124,12 @@ const FlightsPage = () => {
       }
       if (toRef.current && !toRef.current.contains(event.target as Node)) {
         setShowToSuggestions(false);
+      }
+      if (
+        travelersRef.current &&
+        !travelersRef.current.contains(event.target as Node)
+      ) {
+        setShowTravelersDropdown(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -169,6 +189,9 @@ const FlightsPage = () => {
     const params = new URLSearchParams();
     if (fromQuery) params.append("from", fromQuery);
     if (toQuery) params.append("to", toQuery);
+    params.append("adults", adults.toString());
+    params.append("children", children.toString());
+    params.append("cabinClass", cabinClass);
     router.push(`/flights/results?${params.toString()}`);
   };
 
@@ -300,6 +323,140 @@ const FlightsPage = () => {
 
           {/* Search Form */}
           <div className="space-y-6">
+            {/* Travelers & Class Selection Row */}
+            <div className="flex flex-wrap gap-4 mb-4">
+              {/* Travelers Dropdown */}
+              <div className="relative z-50">
+                <button
+                  onClick={() =>
+                    setShowTravelersDropdown(!showTravelersDropdown)
+                  }
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[#2B2B6A]/30 dark:hover:border-yellow-400/30"
+                >
+                  <Users className="w-5 h-5 text-[#2B2B6A] dark:text-yellow-400" />
+                  <span className="font-bold text-[#2B2B6A] dark:text-yellow-400 text-sm">
+                    {adults + children} Traveler
+                    {adults + children > 1 ? "s" : ""}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-[#2B2B6A] dark:text-yellow-400" />
+                </button>
+
+                <AnimatePresence>
+                  {showTravelersDropdown && (
+                    <motion.div
+                      ref={travelersRef}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full left-0 mt-2 p-4 bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-72 border border-purple-100 dark:border-purple-900/30 z-[100]"
+                    >
+                      {/* Adults */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <p className="font-bold text-[#2B2B6A] dark:text-white">
+                            Adults
+                          </p>
+                          <p className="text-xs text-gray-400">Age 12+</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => setAdults(Math.max(1, adults - 1))}
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white disabled:opacity-50 transition-colors"
+                            disabled={adults <= 1}
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="font-bold text-[#2B2B6A] dark:text-white w-4 text-center">
+                            {adults}
+                          </span>
+                          <button
+                            onClick={() => setAdults(adults + 1)}
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Children */}
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-bold text-[#2B2B6A] dark:text-white">
+                            Children
+                          </p>
+                          <p className="text-xs text-gray-400">Age 2-11</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() =>
+                              setChildren(Math.max(0, children - 1))
+                            }
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white disabled:opacity-50 transition-colors"
+                            disabled={children <= 0}
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="font-bold text-[#2B2B6A] dark:text-white w-4 text-center">
+                            {children}
+                          </span>
+                          <button
+                            onClick={() => setChildren(children + 1)}
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Cabin Class Selection (Custom Dropdown) */}
+              <div className="relative z-40">
+                <button
+                  onClick={() => setShowClassDropdown(!showClassDropdown)}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[#2B2B6A]/30 dark:hover:border-yellow-400/30"
+                >
+                  <Armchair className="w-5 h-5 text-[#2B2B6A] dark:text-yellow-400" />
+                  <span className="font-bold text-[#2B2B6A] dark:text-yellow-400 text-sm">
+                    {cabinClass}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-[#2B2B6A] dark:text-yellow-400" />
+                </button>
+
+                <AnimatePresence>
+                  {showClassDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute top-full left-0 mt-2 p-2 bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-48 border border-purple-100 dark:border-purple-900/30 z-[100] overflow-hidden"
+                    >
+                      {["Economy", "Business", "First Class"].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => {
+                            setCabinClass(option);
+                            setShowClassDropdown(false);
+                          }}
+                          className={`w-full text-left px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
+                            cabinClass === option
+                              ? "bg-[#2B2B6A] text-white dark:bg-yellow-400 dark:text-black"
+                              : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 group"
+                          }`}
+                        >
+                          <span className="group-hover:translate-x-1 transition-transform inline-block">
+                            {option}
+                          </span>
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
             {activeTab === "multi-city" ? (
               <div className="space-y-4">
                 {[0, 1].map((index) => (
