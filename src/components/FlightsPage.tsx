@@ -741,6 +741,69 @@ const FlightsPage = () => {
         </div>
       </div>
 
+      {/* Airline and Land Partners Section */}
+      <div className="max-w-7xl mx-auto px-4 mt-24 mb-12 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+            Airline & Land{" "}
+            <span className="text-[#2B2B6A] dark:text-purple-400">
+              Partners
+            </span>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            We collaborate with the world's leading airlines and ground support
+            teams to ensure your journey is seamless from takeoff to landing.
+          </p>
+        </motion.div>
+
+        {/* Partners Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-80">
+          {[
+            { name: "Emirates", code: "EK" },
+            { name: "Delta", code: "DL" },
+            { name: "Qatar", code: "QR" },
+            { name: "Singapore", code: "SQ" },
+            { name: "Lufthansa", code: "LH" },
+            { name: "British Airways", code: "BA" },
+            { name: "Marriott", code: "HOTEL" },
+            { name: "Hertz", code: "CAR" },
+            { name: "Hilton", code: "HOTEL" },
+            { name: "Uber", code: "RIDE" },
+            { name: "AirBnB", code: "STAY" },
+            { name: "Allianz", code: "INS" },
+          ].map((partner, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{
+                scale: 1.1,
+                opacity: 1,
+                filter: "brightness(1.2)",
+              }}
+              className="group flex flex-col items-center gap-3 cursor-pointer grayscale hover:grayscale-0 transition-all duration-300"
+            >
+              {/* Logo Placeholder - Transparent & Dark Mode Compatible */}
+              <div className="w-20 h-20 rounded-full border-2 border-gray-200 dark:border-gray-800 bg-transparent flex items-center justify-center group-hover:border-[#2B2B6A] dark:group-hover:border-purple-500 transition-colors">
+                <span className="text-xl font-bold text-gray-400 group-hover:text-[#2B2B6A] dark:group-hover:text-purple-400">
+                  {partner.code}
+                </span>
+              </div>
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                {partner.name}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {/* Details Modal */}
       <AnimatePresence>
         {selectedFlight && (
