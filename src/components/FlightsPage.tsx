@@ -766,49 +766,108 @@ const FlightsPage = () => {
           </p>
         </motion.div>
 
-        {/* Partners Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-80">
-          {[
-            { name: "Emirates", logo: "/partners/emirates.png", code: "EK" },
-            { name: "Delta", logo: "/partners/delta.png", code: "DL" },
-            { name: "Qatar", logo: "/partners/qatar.png", code: "QR" },
-            { name: "Singapore", logo: "/partners/singapore.png", code: "SQ" },
-            { name: "Lufthansa", logo: "/partners/lufthansa.png", code: "LH" },
-            {
-              name: "British Airways",
-              logo: "/partners/british_airways.png",
-              code: "BA",
-            },
-            { name: "Marriott", logo: "/partners/marriott.png", code: "HOTEL" },
-            { name: "Hertz", logo: "/partners/hertz.png", code: "CAR" },
-            { name: "Hilton", logo: "/partners/hilton.png", code: "HOTEL" },
-            { name: "Uber", logo: "/partners/uber.png", code: "RIDE" },
-          ].map((partner, index) => (
+        {/* Partners Marquee Section */}
+        <div className="space-y-12">
+          {/* Row 1: Airlines (Moving Left) */}
+          <div className="relative overflow-hidden py-4">
+            {/* Faded Edges */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-[linear-gradient(to_right,theme(colors.gray.50)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] dark:bg-[linear-gradient(to_right,theme(colors.black)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] z-10"></div>
+            <div className="absolute inset-y-0 right-0 w-32 bg-[linear-gradient(to_left,theme(colors.gray.50)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] dark:bg-[linear-gradient(to_left,theme(colors.black)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] z-10"></div>
+
             <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{
-                scale: 1.1,
-                opacity: 1,
+              animate={{ x: ["0%", "-50%"] }}
+              whileHover={{ animationPlayState: "paused" }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "linear",
               }}
-              className="group flex flex-col items-center gap-3 cursor-pointer transition-all duration-300"
+              className="flex gap-12 whitespace-nowrap w-fit px-12"
             >
-              <div className="w-24 h-24 relative rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 bg-white dark:bg-white/10 flex items-center justify-center p-2 shadow-sm group-hover:shadow-md group-hover:border-brand-blue dark:group-hover:border-brand-yellow transition-all">
-                <Image
-                  src={partner.logo}
-                  alt={partner.name}
-                  fill
-                  className="object-contain p-2 rounded-full "
-                />
-              </div>
-              <span className="text-sm font-bold text-gray-600 dark:text-gray-300 group-hover:text-brand-blue dark:group-hover:text-brand-yellow transition-colors">
-                {partner.name}
-              </span>
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-12">
+                  {[
+                    { name: "Emirates", logo: "/partners/emirates.png" },
+                    { name: "Delta", logo: "/partners/delta.png" },
+                    { name: "Qatar", logo: "/partners/qatar.png" },
+                    { name: "Singapore", logo: "/partners/singapore.png" },
+                    { name: "Lufthansa", logo: "/partners/lufthansa.png" },
+                    {
+                      name: "British Airways",
+                      logo: "/partners/british_airways.png",
+                    },
+                  ].map((partner, idx) => (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ y: -10, scale: 1.05 }}
+                      className="group flex flex-col items-center gap-4 cursor-pointer"
+                    >
+                      <div className="w-28 h-28 relative rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 bg-white/50 dark:bg-white/5 backdrop-blur-md flex items-center justify-center p-3 shadow-sm group-hover:shadow-2xl group-hover:shadow-brand-blue/20 dark:group-hover:shadow-purple-500/20 group-hover:border-brand-blue dark:group-hover:border-purple-400 transition-all duration-300">
+                        <Image
+                          src={partner.logo}
+                          alt={partner.name}
+                          fill
+                          className="object-contain p-2 rounded-full transition-transform duration-500 group-hover:rotate-6"
+                        />
+                      </div>
+                      <span className="text-sm font-bold text-gray-500 dark:text-gray-400 group-hover:text-brand-blue dark:group-hover:text-purple-400 transition-colors">
+                        {partner.name}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              ))}
             </motion.div>
-          ))}
+          </div>
+
+          {/* Row 2: Land & Support (Moving Right) */}
+          <div className="relative overflow-hidden py-4">
+            {/* Faded Edges */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-[linear-gradient(to_right,theme(colors.gray.50)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] dark:bg-[linear-gradient(to_right,theme(colors.black)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] z-10"></div>
+            <div className="absolute inset-y-0 right-0 w-32 bg-[linear-gradient(to_left,theme(colors.gray.50)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] dark:bg-[linear-gradient(to_left,theme(colors.black)_var(--tw-gradient-from),transparent_var(--tw-gradient-to))] z-10"></div>
+
+            <motion.div
+              animate={{ x: ["-50%", "0%"] }}
+              whileHover={{ animationPlayState: "paused" }}
+              transition={{
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="flex gap-12 whitespace-nowrap w-fit px-12"
+            >
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-12">
+                  {[
+                    { name: "Marriott", logo: "/partners/marriott.png" },
+                    { name: "Hertz", logo: "/partners/hertz.png" },
+                    { name: "Hilton", logo: "/partners/hilton.png" },
+                    { name: "Uber", logo: "/partners/uber.png" },
+                    { name: "Hyatt", logo: "/partners/marriott.png" }, // Placeholder for variety
+                    { name: "Sixt", logo: "/partners/hertz.png" }, // Placeholder for variety
+                  ].map((partner, idx) => (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ y: -10, scale: 1.05 }}
+                      className="group flex flex-col items-center gap-4 cursor-pointer"
+                    >
+                      <div className="w-28 h-28 relative rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-800 bg-white/50 dark:bg-white/5 backdrop-blur-md flex items-center justify-center p-3 shadow-sm group-hover:shadow-2xl group-hover:shadow-brand-blue/20 dark:group-hover:shadow-purple-500/20 group-hover:border-brand-blue dark:group-hover:border-purple-400 transition-all duration-300">
+                        <Image
+                          src={partner.logo}
+                          alt={partner.name}
+                          fill
+                          className="object-contain p-2 rounded-full transition-transform duration-500 group-hover:-rotate-6"
+                        />
+                      </div>
+                      <span className="text-sm font-bold text-gray-500 dark:text-gray-400 group-hover:text-brand-blue dark:group-hover:text-purple-400 transition-colors">
+                        {partner.name}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
 

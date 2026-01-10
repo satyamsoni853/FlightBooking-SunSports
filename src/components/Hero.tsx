@@ -9,7 +9,7 @@ const Hero = () => {
     <div className="relative min-h-[90vh] flex items-center overflow-hidden bg-gray-50 dark:bg-black transition-colors duration-500">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute inset-0 bg-linear-to-r from-brand-blue/90 to-purple-900/90 z-10 rounded-full blur-[120px] mix-blend-screen" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[100px] mix-blend-screen" />
       </div>
 
