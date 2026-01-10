@@ -171,7 +171,7 @@ const FlightUsername = () => {
               transition={{ delay: 0.2 }}
               className="bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/20 dark:border-white/10"
             >
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-[#2B2B6A] to-purple-600 dark:from-white dark:to-purple-300 mb-8">
+              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-brand-blue to-purple-600 dark:from-white dark:to-purple-300 mb-8">
                 Passenger Details
               </h2>
 
@@ -367,7 +367,7 @@ const FlightUsername = () => {
                         </div>
                         <button
                           type="button"
-                          className="text-sm font-bold text-[#2B2B6A] dark:text-purple-400 hover:underline"
+                          className="text-sm font-bold text-brand-blue dark:text-purple-400 hover:underline"
                         >
                           Select Seat map
                         </button>
@@ -381,7 +381,7 @@ const FlightUsername = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full py-4 bg-[#2B2B6A] text-white font-bold rounded-xl shadow-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-brand-blue text-white font-bold rounded-xl shadow-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
                   >
                     Confirm Booking
                   </motion.button>

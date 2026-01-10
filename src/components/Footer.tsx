@@ -13,8 +13,7 @@ const Footer = () => {
   // Theme-aware classes
   const footerBgClass = isDarkMode ? "bg-black" : "bg-gray-50";
   const textColorClass = isDarkMode ? "text-gray-300" : "text-gray-700";
-  const linkHoverColor = "text-purple-600 dark:text-purple-400";
-  const titleColor = isDarkMode ? "text-white" : "text-[#2B2B6A]";
+  const titleColor = isDarkMode ? "text-white" : "text-brand-blue";
 
   // Animation Variants
   const containerVariants: Variants = {
@@ -39,7 +38,7 @@ const Footer = () => {
     >
       {/* Animated Background - Consistent with other pages */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#2B2B6A]/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-blue/5 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-purple-900/5 rounded-full blur-[120px] animate-pulse delay-1000" />
       </div>
 
@@ -56,7 +55,7 @@ const Footer = () => {
         }}
         className="absolute right-[5%] top-[10%] opacity-10 pointer-events-none z-0"
       >
-        <Plane className="w-64 h-64 text-[#2B2B6A] dark:text-purple-500" />
+        <Plane className="w-64 h-64 text-brand-blue dark:text-purple-500" />
       </motion.div>
 
       <motion.div
@@ -73,7 +72,7 @@ const Footer = () => {
             className="flex flex-col gap-6 lg:w-1/3"
           >
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-16 h-16 transition-transform duration-300 group-hover:scale-110">
+              <div className="relative w-48 h-20 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/sunsportslogo.png"
                   alt="logo"
@@ -104,7 +103,7 @@ const Footer = () => {
                   className={`p-3 rounded-full ${
                     isDarkMode
                       ? "bg-gray-800 text-white hover:bg-purple-600"
-                      : "bg-white text-gray-700 hover:bg-[#2B2B6A] hover:text-white"
+                      : "bg-white text-gray-700 hover:bg-brand-blue hover:text-white"
                   } shadow-md transition-all duration-300`}
                 >
                   <Item.icon className="w-5 h-5" />

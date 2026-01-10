@@ -7,16 +7,22 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-brand-blue: #001489;
+  --color-brand-yellow: #ffcd00;
 }
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brand-blue: #001489;
+  --brand-yellow: #ffcd00;
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --brand-blue: #001489;
+  --brand-yellow: #ffcd00;
 }
 
 body {

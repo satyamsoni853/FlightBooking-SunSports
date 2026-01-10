@@ -92,13 +92,13 @@ const Navbar = () => {
               href="/"
               className="flex-shrink-0 flex items-center gap-3 group"
             >
-              <div className="relative w-24 h-24 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-48 h-20 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/sunsportslogo.png"
                   alt="Travel Logo"
                   fill
-                  sizes="48px"
-                  className="object-contain drop-shadow-md"
+                  sizes="192px"
+                  className="object-contain rounded-full drop-shadow-sm"
                 />
               </div>
             </Link>
@@ -117,8 +117,8 @@ const Navbar = () => {
                     className={`relative px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 z-10 ${
                       isActive
                         ? isDarkMode
-                          ? "text-yellow-400"
-                          : "text-yellow-600"
+                          ? "text-brand-yellow"
+                          : "text-brand-yellow"
                         : isDarkMode
                         ? "text-gray-300 hover:text-white"
                         : "text-gray-600 hover:text-black"
@@ -271,7 +271,7 @@ const Navbar = () => {
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold text-sm shadow-lg transition-all"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-blue hover:opacity-90 text-white font-bold text-sm shadow-lg transition-all"
                   >
                     <LogIn className="w-4 h-4" />
                     Sign In
@@ -358,7 +358,7 @@ const Navbar = () => {
                         <img
                           src={user.avatar}
                           alt={user.name}
-                          className="w-10 h-10 rounded-full border-2 border-[#2B2B6A] dark:border-white/20"
+                          className="w-10 h-10 rounded-full border-2 border-brand-blue dark:border-white/20"
                         />
                         <div>
                           <p className="text-sm font-bold text-gray-800 dark:text-white">
@@ -402,7 +402,7 @@ const Navbar = () => {
                       <Link
                         href="/login"
                         onClick={toggleMobileMenu}
-                        className="flex items-center justify-center gap-2 w-full py-3 bg-[#2B2B6A] text-white font-bold rounded-xl shadow-lg mt-4"
+                        className="flex items-center justify-center gap-2 w-full py-3 bg-brand-blue text-white font-bold rounded-xl shadow-lg mt-4"
                       >
                         <LogIn className="w-4 h-4" />
                         Sign In

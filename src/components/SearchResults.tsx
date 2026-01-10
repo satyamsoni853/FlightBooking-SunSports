@@ -261,7 +261,7 @@ const SearchResults = () => {
                           }}
                           className={`w-full text-left px-4 py-3 text-sm font-bold transition-colors ${
                             sortOption === opt
-                              ? "bg-[#2B2B6A] text-white dark:bg-yellow-400 dark:text-black"
+                              ? "bg-brand-blue text-white dark:bg-brand-yellow dark:text-black"
                               : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                           }`}
                         >
@@ -293,7 +293,7 @@ const SearchResults = () => {
                 whileTap={{ scale: 0.95 }}
                 className={`flex flex-col items-center justify-center w-24 h-20 rounded-2xl border transition-all ${
                   item.isActive
-                    ? "bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-500/30"
+                    ? "bg-brand-blue border-purple-600 text-white shadow-lg shadow-purple-500/30"
                     : "bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-purple-500/50"
                 }`}
               >
@@ -362,7 +362,7 @@ const SearchResults = () => {
                 />
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-full mt-8 py-3 bg-purple-600 text-white font-bold rounded-xl"
+                  className="w-full mt-8 py-3 bg-brand-blue text-white font-bold rounded-xl"
                 >
                   Apply Filters
                 </button>

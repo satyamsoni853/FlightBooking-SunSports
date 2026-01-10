@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Plane,
@@ -51,7 +52,7 @@ const POPULAR_FLIGHTS = [
     id: 2,
     airline: "Delta",
     logoText: "DL",
-    logoColor: "bg-[#2B2B6A]",
+    logoColor: "bg-[brand-blue]",
     timeStart: "08:20 AM",
     timeEnd: "10:35 PM",
     placeStart: "LHR",
@@ -220,12 +221,12 @@ const FlightsPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-black pb-20 transition-colors duration-300 relative overflow-hidden">
       {/* Animated Background - Deep Purple/Black Theme */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#2B2B6A]/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[brand-blue]/20 rounded-full blur-[120px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/20 rounded-full blur-[120px] animate-pulse delay-1000" />
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-[500px] md:h-[600px] w-full bg-gradient-to-r from-[#2B2B6A] to-purple-900 overflow-hidden rounded-b-[30px] md:rounded-b-[50px] shadow-2xl">
+      <div className="relative h-[500px] md:h-[600px] w-full bg-gradient-to-r from-[brand-blue] to-purple-900 overflow-hidden rounded-b-[30px] md:rounded-b-[50px] shadow-2xl">
         {/* Animated Particles/Gradient Overlay */}
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
         <motion.div
@@ -243,7 +244,7 @@ const FlightsPage = () => {
             variants={containerVariants}
           >
             <motion.div variants={itemVariants} className="mb-2">
-              <span className="px-4 py-1.5 rounded-full border border-yellow-400/50 text-yellow-400 text-xs font-bold tracking-widest uppercase bg-black/30 backdrop-blur-sm">
+              <span className="px-4 py-1.5 rounded-full border border-brand-yellow/50 text-brand-yellow text-xs font-bold tracking-widest uppercase bg-black/30 backdrop-blur-sm">
                 Premium Travel
               </span>
             </motion.div>
@@ -252,7 +253,7 @@ const FlightsPage = () => {
               className="text-4xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight"
             >
               Explore the{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-yellow-200">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-yellow to-yellow-200">
                 World
               </span>{" "}
               Without Limits
@@ -301,13 +302,13 @@ const FlightsPage = () => {
                 className={`relative px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
                   activeTab === tab
                     ? "text-black dark:text-black"
-                    : "text-gray-500 dark:text-gray-400 hover:text-[#2B2B6A] dark:hover:text-white"
+                    : "text-gray-500 dark:text-gray-400 hover:text-[brand-blue] dark:hover:text-white"
                 }`}
               >
                 {activeTab === tab && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute inset-0 bg-yellow-400 rounded-full"
+                    className="absolute inset-0 bg-brand-yellow rounded-full"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -331,14 +332,14 @@ const FlightsPage = () => {
                   onClick={() =>
                     setShowTravelersDropdown(!showTravelersDropdown)
                   }
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[#2B2B6A]/30 dark:hover:border-yellow-400/30"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[brand-blue]/30 dark:hover:border-brand-yellow/30"
                 >
-                  <Users className="w-5 h-5 text-[#2B2B6A] dark:text-yellow-400" />
-                  <span className="font-bold text-[#2B2B6A] dark:text-yellow-400 text-sm">
+                  <Users className="w-5 h-5 text-[brand-blue] dark:text-brand-yellow" />
+                  <span className="font-bold text-[brand-blue] dark:text-brand-yellow text-sm">
                     {adults + children} Traveler
                     {adults + children > 1 ? "s" : ""}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-[#2B2B6A] dark:text-yellow-400" />
+                  <ChevronDown className="w-4 h-4 text-[brand-blue] dark:text-brand-yellow" />
                 </button>
 
                 <AnimatePresence>
@@ -353,7 +354,7 @@ const FlightsPage = () => {
                       {/* Adults */}
                       <div className="flex items-center justify-between mb-4">
                         <div>
-                          <p className="font-bold text-[#2B2B6A] dark:text-white">
+                          <p className="font-bold text-[brand-blue] dark:text-white">
                             Adults
                           </p>
                           <p className="text-xs text-gray-400">Age 12+</p>
@@ -361,17 +362,17 @@ const FlightsPage = () => {
                         <div className="flex items-center gap-3">
                           <button
                             onClick={() => setAdults(Math.max(1, adults - 1))}
-                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white disabled:opacity-50 transition-colors"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[brand-blue] dark:text-white disabled:opacity-50 transition-colors"
                             disabled={adults <= 1}
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="font-bold text-[#2B2B6A] dark:text-white w-4 text-center">
+                          <span className="font-bold text-[brand-blue] dark:text-white w-4 text-center">
                             {adults}
                           </span>
                           <button
                             onClick={() => setAdults(adults + 1)}
-                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white transition-colors"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[brand-blue] dark:text-white transition-colors"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -381,7 +382,7 @@ const FlightsPage = () => {
                       {/* Children */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-bold text-[#2B2B6A] dark:text-white">
+                          <p className="font-bold text-[brand-blue] dark:text-white">
                             Children
                           </p>
                           <p className="text-xs text-gray-400">Age 2-11</p>
@@ -391,17 +392,17 @@ const FlightsPage = () => {
                             onClick={() =>
                               setChildren(Math.max(0, children - 1))
                             }
-                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white disabled:opacity-50 transition-colors"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[brand-blue] dark:text-white disabled:opacity-50 transition-colors"
                             disabled={children <= 0}
                           >
                             <Minus className="w-4 h-4" />
                           </button>
-                          <span className="font-bold text-[#2B2B6A] dark:text-white w-4 text-center">
+                          <span className="font-bold text-[brand-blue] dark:text-white w-4 text-center">
                             {children}
                           </span>
                           <button
                             onClick={() => setChildren(children + 1)}
-                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[#2B2B6A] dark:text-white transition-colors"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-[brand-blue] dark:text-white transition-colors"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -416,13 +417,13 @@ const FlightsPage = () => {
               <div className="relative z-40">
                 <button
                   onClick={() => setShowClassDropdown(!showClassDropdown)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[#2B2B6A]/30 dark:hover:border-yellow-400/30"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors pointer-events-auto border border-transparent hover:border-[brand-blue]/30 dark:hover:border-brand-yellow/30"
                 >
-                  <Armchair className="w-5 h-5 text-[#2B2B6A] dark:text-yellow-400" />
-                  <span className="font-bold text-[#2B2B6A] dark:text-yellow-400 text-sm">
+                  <Armchair className="w-5 h-5 text-[brand-blue] dark:text-brand-yellow" />
+                  <span className="font-bold text-[brand-blue] dark:text-brand-yellow text-sm">
                     {cabinClass}
                   </span>
-                  <ChevronDown className="w-4 h-4 text-[#2B2B6A] dark:text-yellow-400" />
+                  <ChevronDown className="w-4 h-4 text-[brand-blue] dark:text-brand-yellow" />
                 </button>
 
                 <AnimatePresence>
@@ -442,7 +443,7 @@ const FlightsPage = () => {
                           }}
                           className={`w-full text-left px-4 py-2 rounded-xl text-sm font-bold transition-colors ${
                             cabinClass === option
-                              ? "bg-[#2B2B6A] text-white dark:bg-yellow-400 dark:text-black"
+                              ? "bg-[brand-blue] text-white dark:bg-brand-yellow dark:text-black"
                               : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 group"
                           }`}
                         >
@@ -473,13 +474,13 @@ const FlightsPage = () => {
                         From
                       </label>
                       <div className="relative group">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[brand-blue] dark:group-focus-within:text-purple-400 transition-colors">
                           <Plane className="w-5 h-5 -rotate-45" />
                         </div>
                         <input
                           type="text"
                           placeholder="City or Airport"
-                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[brand-blue] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -490,13 +491,13 @@ const FlightsPage = () => {
                         To
                       </label>
                       <div className="relative group">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[brand-blue] dark:group-focus-within:text-purple-400 transition-colors">
                           <MapPin className="w-5 h-5" />
                         </div>
                         <input
                           type="text"
                           placeholder="City or Airport"
-                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[brand-blue] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -507,12 +508,12 @@ const FlightsPage = () => {
                         Date
                       </label>
                       <div className="relative group">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[brand-blue] dark:group-focus-within:text-purple-400 transition-colors">
                           <Calendar className="w-5 h-5" />
                         </div>
                         <input
                           type="date"
-                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                          className="w-full pl-12 pr-4 py-3 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[brand-blue] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -524,7 +525,7 @@ const FlightsPage = () => {
                     onClick={handleSearchSubmit}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-8 py-3 bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
+                    className="px-8 py-3 bg-[brand-blue] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
                   >
                     <Search className="w-5 h-5" />
                     <span>Search Multi-City</span>
@@ -539,7 +540,7 @@ const FlightsPage = () => {
                     From
                   </label>
                   <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[brand-blue] dark:group-focus-within:text-purple-400 transition-colors">
                       <Plane className="w-5 h-5 -rotate-45" />
                     </div>
                     <input
@@ -550,7 +551,7 @@ const FlightsPage = () => {
                         handleSearchInput(e.target.value, "from")
                       }
                       onFocus={() => fromQuery && setShowFromSuggestions(true)}
-                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[brand-blue] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                     />
                   </div>
                   {/* Autocomplete Dropdown */}
@@ -606,7 +607,7 @@ const FlightsPage = () => {
                     To
                   </label>
                   <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-blue dark:group-focus-within:text-purple-400 transition-colors">
                       <MapPin className="w-5 h-5" />
                     </div>
                     <input
@@ -615,7 +616,7 @@ const FlightsPage = () => {
                       value={toQuery}
                       onChange={(e) => handleSearchInput(e.target.value, "to")}
                       onFocus={() => toQuery && setShowToSuggestions(true)}
-                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                      className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                     />
                   </div>
                   {/* Autocomplete Dropdown */}
@@ -662,12 +663,12 @@ const FlightsPage = () => {
                       Departure
                     </label>
                     <div className="relative group">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-blue dark:group-focus-within:text-purple-400 transition-colors">
                         <Calendar className="w-5 h-5" />
                       </div>
                       <input
                         type="date"
-                        className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                       />
                     </div>
                   </div>
@@ -678,12 +679,12 @@ const FlightsPage = () => {
                         Return
                       </label>
                       <div className="relative group">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#2B2B6A] dark:group-focus-within:text-purple-400 transition-colors">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-blue dark:group-focus-within:text-purple-400 transition-colors">
                           <Calendar className="w-5 h-5" />
                         </div>
                         <input
                           type="date"
-                          className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2B2B6A] dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
+                          className="w-full pl-12 pr-4 py-4 bg-gray-50/50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue dark:focus:ring-purple-500 dark:text-white font-medium text-gray-700 placeholder-gray-400 transition-all hover:bg-gray-50 dark:hover:bg-gray-800"
                         />
                       </div>
                     </div>
@@ -696,7 +697,7 @@ const FlightsPage = () => {
                     onClick={handleSearchSubmit}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full h-[56px] bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
+                    className="w-full h-[56px] bg-brand-blue hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2"
                   >
                     <Search className="w-5 h-5" />
                     <span>Search</span>
@@ -716,14 +717,16 @@ const FlightsPage = () => {
           viewport={{ once: true }}
           className="flex items-center gap-4"
         >
-          <div className="h-10 w-2 bg-yellow-400 rounded-full" />
+          <div className="h-10 w-2 bg-brand-yellow rounded-full" />
           <h2 className="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
             Popular{" "}
-            <span className="text-[#2B2B6A] dark:text-purple-400">Routes</span>
+            <span className="text-[brand-blue] dark:text-purple-400">
+              Routes
+            </span>
           </h2>
           <Link
             href="/popular-routes"
-            className="ml-auto flex items-center gap-2 text-[#2B2B6A] dark:text-purple-400 font-bold hover:underline"
+            className="ml-auto flex items-center gap-2 text-brand-blue dark:text-purple-400 font-bold hover:underline"
           >
             View All <ArrowRight className="w-4 h-4" />
           </Link>
@@ -751,31 +754,34 @@ const FlightsPage = () => {
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
             Airline & Land{" "}
-            <span className="text-[#2B2B6A] dark:text-purple-400">
+            <span className="text-[brand-blue] dark:text-purple-400">
               Partners
             </span>
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            We collaborate with the world's leading airlines and ground support
-            teams to ensure your journey is seamless from takeoff to landing.
+            We collaborate with the world&apos;s leading airlines and ground
+            support teams to ensure your journey is seamless from takeoff to
+            landing.
           </p>
         </motion.div>
 
         {/* Partners Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-80">
           {[
-            { name: "Emirates", code: "EK" },
-            { name: "Delta", code: "DL" },
-            { name: "Qatar", code: "QR" },
-            { name: "Singapore", code: "SQ" },
-            { name: "Lufthansa", code: "LH" },
-            { name: "British Airways", code: "BA" },
-            { name: "Marriott", code: "HOTEL" },
-            { name: "Hertz", code: "CAR" },
-            { name: "Hilton", code: "HOTEL" },
-            { name: "Uber", code: "RIDE" },
-            { name: "AirBnB", code: "STAY" },
-            { name: "Allianz", code: "INS" },
+            { name: "Emirates", logo: "/partners/emirates.png", code: "EK" },
+            { name: "Delta", logo: "/partners/delta.png", code: "DL" },
+            { name: "Qatar", logo: "/partners/qatar.png", code: "QR" },
+            { name: "Singapore", logo: "/partners/singapore.png", code: "SQ" },
+            { name: "Lufthansa", logo: "/partners/lufthansa.png", code: "LH" },
+            {
+              name: "British Airways",
+              logo: "/partners/british_airways.png",
+              code: "BA",
+            },
+            { name: "Marriott", logo: "/partners/marriott.png", code: "HOTEL" },
+            { name: "Hertz", logo: "/partners/hertz.png", code: "CAR" },
+            { name: "Hilton", logo: "/partners/hilton.png", code: "HOTEL" },
+            { name: "Uber", logo: "/partners/uber.png", code: "RIDE" },
           ].map((partner, index) => (
             <motion.div
               key={index}
@@ -786,17 +792,18 @@ const FlightsPage = () => {
               whileHover={{
                 scale: 1.1,
                 opacity: 1,
-                filter: "brightness(1.2)",
               }}
-              className="group flex flex-col items-center gap-3 cursor-pointer grayscale hover:grayscale-0 transition-all duration-300"
+              className="group flex flex-col items-center gap-3 cursor-pointer transition-all duration-300"
             >
-              {/* Logo Placeholder - Transparent & Dark Mode Compatible */}
-              <div className="w-20 h-20 rounded-full border-2 border-gray-200 dark:border-gray-800 bg-transparent flex items-center justify-center group-hover:border-[#2B2B6A] dark:group-hover:border-purple-500 transition-colors">
-                <span className="text-xl font-bold text-gray-400 group-hover:text-[#2B2B6A] dark:group-hover:text-purple-400">
-                  {partner.code}
-                </span>
+              <div className="w-24 h-24 relative rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 bg-white dark:bg-white/10 flex items-center justify-center p-2 shadow-sm group-hover:shadow-md group-hover:border-brand-blue dark:group-hover:border-brand-yellow transition-all">
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  fill
+                  className="object-contain p-2 rounded-full "
+                />
               </div>
-              <span className="text-sm font-semibold text-gray-500 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+              <span className="text-sm font-bold text-gray-600 dark:text-gray-300 group-hover:text-brand-blue dark:group-hover:text-brand-yellow transition-colors">
                 {partner.name}
               </span>
             </motion.div>
@@ -888,7 +895,7 @@ const FlightCard = ({
             <div className="w-full h-[2px] bg-gray-200 dark:bg-gray-700 relative flex items-center justify-center">
               <div className="absolute w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full left-0"></div>
               <div className="absolute w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full right-0"></div>
-              <Plane className="w-5 h-5 text-[#2B2B6A] dark:text-purple-400 transform rotate-90 absolute" />
+              <Plane className="w-5 h-5 text-brand-blue dark:text-purple-400 transform rotate-90 absolute" />
             </div>
             <div
               className={`text-xs mt-2 font-bold ${
@@ -952,9 +959,9 @@ const FlightDetailsModal = ({
       >
         <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto pointer-events-auto border border-gray-200 dark:border-gray-700 relative flex flex-col">
           {/* Header Image / Pattern */}
-          <div className="h-32 bg-[#2B2B6A] relative overflow-hidden shrink-0">
+          <div className="h-32 bg-brand-blue relative overflow-hidden shrink-0">
             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-            <div className="absolute inset-0 bg-linear-to-r from-[#2B2B6A] to-purple-800 opacity-90"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-brand-blue to-purple-800 opacity-90"></div>
             <button
               onClick={onClose}
               className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors"
@@ -1056,7 +1063,7 @@ const FlightDetailsModal = ({
               <span className="block text-sm text-gray-500">
                 Total Price per person
               </span>
-              <span className="text-3xl font-extrabold text-[#2B2B6A] dark:text-purple-400">
+              <span className="text-3xl font-extrabold text-brand-blue dark:text-purple-400">
                 {flight.price}
               </span>
             </div>
@@ -1064,7 +1071,7 @@ const FlightDetailsModal = ({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onClose}
-              className="w-full md:w-auto px-8 py-3 bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg transition-all"
+              className="w-full md:w-auto px-8 py-3 bg-brand-blue hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg transition-all"
             >
               Book This Flight
             </motion.button>

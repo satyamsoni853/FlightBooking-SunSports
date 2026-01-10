@@ -95,7 +95,7 @@ const FlightPayment = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex-1 min-w-[100px] py-4 flex flex-col items-center gap-2 text-xs font-bold transition-all relative ${
                   activeTab === tab.id
-                    ? "text-[#2B2B6A] dark:text-white"
+                    ? "text-brand-blue dark:text-white"
                     : "text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-900"
                 }`}
               >
@@ -108,7 +108,7 @@ const FlightPayment = () => {
                 {activeTab === tab.id && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute bottom-0 left-0 w-full h-[3px] bg-linear-to-r from-[#2B2B6A] to-purple-500"
+                    className="absolute bottom-0 left-0 w-full h-[3px] bg-linear-to-r from-brand-blue to-purple-500"
                   />
                 )}
               </button>
@@ -305,7 +305,7 @@ const FlightPayment = () => {
               whileTap={{ scale: 0.98 }}
               onClick={handlePay}
               disabled={loading}
-              className="w-full mt-6 py-4 bg-linear-to-r from-[#2B2B6A] to-purple-800 text-white font-bold rounded-xl shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
+              className="w-full mt-6 py-4 bg-linear-to-r from-brand-blue to-purple-800 text-white font-bold rounded-xl shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
             >
               {loading ? (
                 <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

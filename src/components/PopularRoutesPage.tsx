@@ -25,7 +25,7 @@ const PopularRoutesPage = () => {
       id: 2,
       airline: "Delta",
       logoText: "DL",
-      logoColor: "bg-[#2B2B6A]",
+      logoColor: "bg-brand-blue",
       from: "London (LHR)",
       to: "New York (JFK)",
       duration: "08h 15m",
@@ -76,9 +76,9 @@ const PopularRoutesPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
       {/* Hero Section */}
-      <div className="relative h-[400px] w-full bg-[#2B2B6A] overflow-hidden rounded-b-[50px] shadow-2xl">
+      <div className="relative h-[400px] w-full bg-brand-blue overflow-hidden rounded-b-[50px] shadow-2xl">
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2B2B6A] to-purple-900 opacity-90"></div>
+        <div className="absolute inset-0 bg-linear-to-tr from-brand-blue to-purple-900 opacity-90"></div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
           <motion.span
@@ -166,7 +166,7 @@ const RouteCard = ({ route, index }: { route: RouteData; index: number }) => {
               </p>
             </div>
             <div className="ml-auto flex flex-col items-end">
-              <span className="text-3xl font-extrabold text-[#2B2B6A] dark:text-purple-400">
+              <span className="text-3xl font-extrabold text-brand-blue dark:text-purple-400">
                 {route.price}
               </span>
               <span className="text-xs text-gray-400">avg. per person</span>
@@ -238,7 +238,7 @@ const RouteCard = ({ route, index }: { route: RouteData; index: number }) => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 group/btn"
+            className="w-full py-4 bg-brand-blue hover:bg-purple-800 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 group/btn"
           >
             <span>Book This Flight</span>
             <Plane className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />

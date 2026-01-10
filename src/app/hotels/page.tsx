@@ -93,7 +93,7 @@ export default function HotelsPage() {
               <input
                 type="text"
                 placeholder="Where are you going?"
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#2B2B6A] font-bold text-gray-900 dark:text-white"
+                className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-brand-blue font-bold text-gray-900 dark:text-white"
                 value={searchParams.location}
                 onChange={(e) =>
                   setSearchParams({ ...searchParams, location: e.target.value })
@@ -103,10 +103,10 @@ export default function HotelsPage() {
 
             <div className="flex-1 w-full md:w-auto grid grid-cols-2 gap-4">
               <div className="relative group">
-                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#2B2B6A] transition-colors" />
+                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-blue transition-colors" />
                 <input
                   type="date"
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#2B2B6A] font-bold text-gray-900 dark:text-white"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-brand-blue font-bold text-gray-900 dark:text-white"
                   value={searchParams.checkIn}
                   onChange={(e) =>
                     setSearchParams({
@@ -117,10 +117,10 @@ export default function HotelsPage() {
                 />
               </div>
               <div className="relative group">
-                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#2B2B6A] transition-colors" />
+                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-blue transition-colors" />
                 <input
                   type="date"
-                  className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#2B2B6A] font-bold text-gray-900 dark:text-white"
+                  className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-brand-blue font-bold text-gray-900 dark:text-white"
                   value={searchParams.checkOut}
                   onChange={(e) =>
                     setSearchParams({
@@ -133,9 +133,9 @@ export default function HotelsPage() {
             </div>
 
             <div className="w-full md:w-40 relative group">
-              <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#2B2B6A] transition-colors" />
+              <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-brand-blue transition-colors" />
               <select
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#2B2B6A] font-bold text-gray-900 dark:text-white appearance-none cursor-pointer"
+                className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-brand-blue font-bold text-gray-900 dark:text-white appearance-none cursor-pointer"
                 value={searchParams.guests}
                 onChange={(e) =>
                   setSearchParams({ ...searchParams, guests: e.target.value })
@@ -148,7 +148,7 @@ export default function HotelsPage() {
               </select>
             </div>
 
-            <button className="w-full md:w-auto px-8 py-4 bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold rounded-2xl transition-colors shadow-lg shadow-purple-500/30">
+            <button className="w-full md:w-auto px-8 py-4 bg-brand-blue hover:bg-purple-800 text-white font-bold rounded-2xl transition-colors shadow-lg shadow-purple-500/30">
               Search
             </button>
           </motion.div>
@@ -166,7 +166,7 @@ export default function HotelsPage() {
               Explore our top-rated stays around the world
             </p>
           </div>
-          <button className="text-[#2B2B6A] dark:text-purple-400 font-bold hover:underline">
+          <button className="text-brand-blue dark:text-purple-400 font-bold hover:underline">
             View All
           </button>
         </div>
@@ -224,7 +224,7 @@ export default function HotelsPage() {
                     </span>
                     <span className="text-gray-500 text-xs"> / night</span>
                   </div>
-                  <button className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-[#2B2B6A] dark:text-purple-400 group-hover:bg-[#2B2B6A] group-hover:text-white transition-all">
+                  <button className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center text-brand-blue dark:text-purple-400 group-hover:bg-brand-blue group-hover:text-white transition-all">
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
