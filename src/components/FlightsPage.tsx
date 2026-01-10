@@ -725,6 +725,7 @@ const FlightsPage = () => {
             </span>
           </h2>
           <Link
+            suppressHydrationWarning
             href="/popular-routes"
             className="ml-auto flex items-center gap-2 text-brand-blue dark:text-purple-400 font-bold hover:underline"
           >

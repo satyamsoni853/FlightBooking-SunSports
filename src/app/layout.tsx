@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -35,7 +35,9 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <Navbar />
-            <main className="min-h-screen pt-20">{children}</main>
+            <main className="min-h-screen pt-20" suppressHydrationWarning>
+              {children}
+            </main>
             <Footer />
           </AuthProvider>
         </ThemeProvider>

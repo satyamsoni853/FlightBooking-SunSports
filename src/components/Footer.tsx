@@ -34,6 +34,7 @@ const Footer = () => {
 
   return (
     <footer
+      suppressHydrationWarning
       className={`relative w-full pt-20 pb-28 overflow-hidden ${footerBgClass} ${textColorClass} transition-colors duration-500`}
     >
       {/* Animated Background - Consistent with other pages */}
@@ -72,9 +73,9 @@ const Footer = () => {
             className="flex flex-col gap-6 lg:w-1/3"
           >
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-48 h-20 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-50 h-30 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/sunsportslogo.png"
+                  src="/NewLogo.png"
                   alt="logo"
                   fill
                   className="object-contain"
@@ -128,6 +129,7 @@ const Footer = () => {
                   {section.links.map((link) => (
                     <li key={link}>
                       <Link
+                        suppressHydrationWarning
                         href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
                         className={`text-sm sm:text-base transition-all duration-200 hover:pl-2 inline-block ${
                           isDarkMode

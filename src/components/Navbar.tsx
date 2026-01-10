@@ -18,8 +18,8 @@ import {
   LogIn,
 } from "lucide-react";
 
-// 1. Custom Golden Shadow Utility
-const GOLDEN_SHADOW = "inset 0 6px 20px 0 rgba(218, 165, 32, 0.3)";
+// 1. Custom Purple Shadow Utility
+const PURPLE_SHADOW = "inset 0 6px 20px 0 rgba(147, 51, 234, 0.3)";
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -64,8 +64,8 @@ const Navbar = () => {
     ? "bg-black/60 backdrop-blur-xl border-b border-white/10 supports-[backdrop-filter]:bg-black/40"
     : "bg-white/70 backdrop-blur-xl border-b border-gray-200/50 supports-[backdrop-filter]:bg-white/50";
 
-  const goldenShadowStyle = {
-    boxShadow: GOLDEN_SHADOW,
+  const purpleShadowStyle = {
+    boxShadow: PURPLE_SHADOW,
   };
 
   const glassDropdown = isDarkMode
@@ -74,6 +74,7 @@ const Navbar = () => {
 
   return (
     <header
+      suppressHydrationWarning
       className={`w-full fixed top-0 z-50 flex justify-center transition-all duration-300 ${
         isScrolled ? "p-2" : "p-4"
       }`}
@@ -83,7 +84,7 @@ const Navbar = () => {
         className={`w-full max-w-[1600px] transition-all duration-300 ${glassEffect} rounded-3xl ${
           isScrolled ? "shadow-lg" : ""
         }`}
-        style={isScrolled ? {} : goldenShadowStyle}
+        style={isScrolled ? {} : purpleShadowStyle}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
@@ -92,12 +93,12 @@ const Navbar = () => {
               href="/"
               className="flex-shrink-0 flex items-center gap-3 group"
             >
-              <div className="relative w-48 h-20 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-50 h-50 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/sunsportslogo.png"
+                  src="/NewLogo.png"
                   alt="Travel Logo"
                   fill
-                  sizes="192px"
+                  sizes="200px"
                   className="object-contain rounded-full drop-shadow-sm"
                 />
               </div>
