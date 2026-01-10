@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useTheme } from "../app/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,14 +26,29 @@ const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [hoveredPath, setHoveredPath] = useState(usePathname());
+  const pathname = usePathname();
 
   const toggleProfile = () => setIsProfileOpen((prev) => !prev);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
+  // Scroll Detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Flights", href: "/flights/results" },
-
     { name: "Hotels", href: "/hotels" },
     { name: "Popular Routes", href: "/popular-routes" },
   ];
@@ -57,22 +73,28 @@ const Navbar = () => {
     : "bg-white/85 border border-gray-200/50 text-gray-800 shadow-xl";
 
   return (
-    <header className="w-full fixed top-0 z-50 flex justify-center p-2">
-      <nav
-        // Applied rounded-xl here
-        className={`w-full max-w-[1600px] transition-all duration-300 ${glassEffect} rounded-3xl`}
-        style={goldenShadowStyle}
+    <header
+      className={`w-full fixed top-0 z-50 flex justify-center transition-all duration-300 ${
+        isScrolled ? "p-2" : "p-4"
+      }`}
+    >
+      <motion.nav
+        layout
+        className={`w-full max-w-[1600px] transition-all duration-300 ${glassEffect} rounded-3xl ${
+          isScrolled ? "shadow-lg" : ""
+        }`}
+        style={isScrolled ? {} : goldenShadowStyle}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo (Removed text title) */}
+          <div className="flex items-center justify-between h-24">
+            {/* Logo */}
             <Link
               href="/"
               className="flex-shrink-0 flex items-center gap-3 group"
             >
               <div className="relative w-24 h-24 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/travel-logo.png"
+                  src="/sunsportslogo.png"
                   alt="Travel Logo"
                   fill
                   sizes="48px"
@@ -81,27 +103,53 @@ const Navbar = () => {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`relative px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${
-                    isDarkMode
-                      ? "text-gray-300 hover:text-yellow-400 hover:bg-white/10"
-                      : "text-gray-600 hover:text-yellow-700 hover:bg-gray-100/50"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
+            {/* Desktop Navigation - Animated Spotlight */}
+            <div
+              className="hidden md:flex items-center space-x-1"
+              onMouseLeave={() => setHoveredPath(pathname)}
+            >
+              {navLinks.map((link) => {
+                const isActive = link.href === pathname;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`relative px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 z-10 ${
+                      isActive
+                        ? isDarkMode
+                          ? "text-yellow-400"
+                          : "text-yellow-600"
+                        : isDarkMode
+                        ? "text-gray-300 hover:text-white"
+                        : "text-gray-600 hover:text-black"
+                    }`}
+                    onMouseEnter={() => setHoveredPath(link.href)}
+                  >
+                    {link.href === hoveredPath && (
+                      <motion.div
+                        layoutId="navbar-pill"
+                        transition={{
+                          type: "spring",
+                          bounce: 0.2,
+                          duration: 0.6,
+                        }}
+                        className={`absolute inset-0 rounded-full -z-10 ${
+                          isDarkMode ? "bg-white/10" : "bg-gray-200/50"
+                        }`}
+                      />
+                    )}
+                    {link.name}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Right Side Actions */}
             <div className="hidden md:flex items-center gap-3">
               {/* Theme Toggle Button */}
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
                 onClick={toggleTheme}
                 className={`p-2.5 rounded-full transition-all duration-300 ${
                   isDarkMode
@@ -112,10 +160,10 @@ const Navbar = () => {
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={isDarkMode ? "sun" : "moon"}
-                    initial={{ y: -10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 10, opacity: 0 }}
-                    transition={{ duration: 0.15 }}
+                    initial={{ y: -10, opacity: 0, rotate: -90 }}
+                    animate={{ y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ y: 10, opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.2 }}
                   >
                     {isDarkMode ? (
                       <Sun className="w-5 h-5" />
@@ -124,14 +172,16 @@ const Navbar = () => {
                     )}
                   </motion.div>
                 </AnimatePresence>
-              </button>
+              </motion.button>
 
               {/* Profile Dropdown or Login Button */}
               {isAuthenticated && user ? (
                 <div className="relative">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={toggleProfile}
-                    className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20 hover:scale-105 transition-transform duration-300"
+                    className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20"
                   >
                     <img
                       src={user.avatar}
@@ -139,14 +189,14 @@ const Navbar = () => {
                       className="w-6 h-6 rounded-full bg-white/20"
                     />
                     <span className="text-xs font-bold pr-1">{user.name}</span>
-                  </button>
+                  </motion.button>
 
                   <AnimatePresence>
                     {isProfileOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 15, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        exit={{ opacity: 0, y: 15, scale: 0.9 }}
                         transition={{ duration: 0.2 }}
                         className={`absolute right-0 mt-4 w-64 rounded-2xl py-2 backdrop-blur-2xl z-50 ${glassDropdown}`}
                       >
@@ -217,12 +267,15 @@ const Navbar = () => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold text-sm shadow-lg transition-all"
-                >
-                  <LogIn className="w-4 h-4" />
-                  Sign In
+                <Link href="/login">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#2B2B6A] hover:bg-purple-800 text-white font-bold text-sm shadow-lg transition-all"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    Sign In
+                  </motion.div>
                 </Link>
               )}
             </div>
@@ -230,7 +283,8 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-3">
               {/* Theme Toggle Button (Mobile) */}
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-colors ${
                   isDarkMode
@@ -243,8 +297,9 @@ const Navbar = () => {
                 ) : (
                   <Moon className="w-5 h-5" />
                 )}
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.9 }}
                 onClick={toggleMobileMenu}
                 className={`p-2 rounded-md transition-colors ${
                   isDarkMode
@@ -257,7 +312,7 @@ const Navbar = () => {
                 ) : (
                   <Menu className="w-6 h-6" />
                 )}
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>
@@ -269,25 +324,30 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              // Applied rounded-b-lg (only bottom corners)
-              className={`md:hidden overflow-hidden ${glassEffect} rounded-b-lg`}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className={`md:hidden overflow-hidden ${glassEffect} rounded-b-3xl border-t border-gray-200/20`}
             >
               <div className="px-4 py-4 space-y-2">
                 {/* Mobile Navigation */}
-                {navLinks.map((link) => (
-                  <Link
+                {navLinks.map((link, idx) => (
+                  <motion.div
                     key={link.name}
-                    href={link.href}
-                    className={`block text-base font-medium px-4 py-2 rounded-lg transition-colors ${
-                      isDarkMode
-                        ? "text-gray-300 hover:bg-white/10 hover:text-yellow-400"
-                        : "text-gray-700 hover:bg-gray-50/50 hover:text-yellow-700"
-                    }`}
-                    onClick={toggleMobileMenu}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
                   >
-                    {link.name}
-                  </Link>
+                    <Link
+                      href={link.href}
+                      className={`block text-base font-medium px-4 py-3 rounded-xl transition-colors ${
+                        isDarkMode
+                          ? "text-gray-300 hover:bg-white/10 hover:text-yellow-400"
+                          : "text-gray-700 hover:bg-gray-50/50 hover:text-yellow-700"
+                      }`}
+                      onClick={toggleMobileMenu}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
                 ))}
 
                 {/* Mobile Profile Links */}
@@ -298,7 +358,7 @@ const Navbar = () => {
                         <img
                           src={user.avatar}
                           alt={user.name}
-                          className="w-8 h-8 rounded-full"
+                          className="w-10 h-10 rounded-full border-2 border-[#2B2B6A] dark:border-white/20"
                         />
                         <div>
                           <p className="text-sm font-bold text-gray-800 dark:text-white">
@@ -338,21 +398,23 @@ const Navbar = () => {
                       </button>
                     </>
                   ) : (
-                    <Link
-                      href="/login"
-                      onClick={toggleMobileMenu}
-                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#2B2B6A] text-white font-bold rounded-xl"
-                    >
-                      <LogIn className="w-4 h-4" />
-                      Sign In
-                    </Link>
+                    <motion.div whileTap={{ scale: 0.98 }}>
+                      <Link
+                        href="/login"
+                        onClick={toggleMobileMenu}
+                        className="flex items-center justify-center gap-2 w-full py-3 bg-[#2B2B6A] text-white font-bold rounded-xl shadow-lg mt-4"
+                      >
+                        <LogIn className="w-4 h-4" />
+                        Sign In
+                      </Link>
+                    </motion.div>
                   )}
                 </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+      </motion.nav>
     </header>
   );
 };
