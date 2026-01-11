@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import BookingStepper from "./BookingStepper";
 import {
   CreditCard,
   Landmark,
@@ -10,6 +12,7 @@ import {
 } from "lucide-react";
 
 const FlightPayment = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("card");
   const [loading, setLoading] = useState(false);
   const [ticketingOption, setTicketingOption] = useState("issue"); // 'issue' or 'hold'
@@ -18,15 +21,7 @@ const FlightPayment = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      const action =
-        ticketingOption === "hold" ? "Booking Held" : "Payment Successful";
-      alert(
-        `${action}! Your booking reference is ${Math.random()
-          .toString(36)
-          .substr(2, 6)
-          .toUpperCase()}.`
-      );
-      window.location.href = "/";
+      router.push("/flights/confirmation");
     }, 2000);
   };
 
@@ -54,6 +49,9 @@ const FlightPayment = () => {
       </div>
 
       <div className="max-w-xl mx-auto relative z-10">
+        {/* Multi-step Stepper */}
+        <BookingStepper currentStep={3} />
+
         {/* Header */}
         <div className="text-center mb-10">
           <motion.div

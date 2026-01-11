@@ -3,6 +3,7 @@ import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import BookingStepper from "./BookingStepper";
 
 // Mock data lookup (since we don't have a real backend/state manager for this demo)
 interface MockFlightData {
@@ -25,7 +26,6 @@ const MOCK_FLIGHTS: Record<string, MockFlightData> = {
     logoColor: "bg-[#d71921]",
     duration: "12h 30m",
   },
-  // ... (rest of mock data relies on inference which fits strict Record)
   "2": {
     airline: "Delta",
     from: "LHR",
@@ -71,7 +71,7 @@ const FlightUsername = () => {
   const flight = MOCK_FLIGHTS[flightId as string] || MOCK_FLIGHTS["1"];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black py-20 px-4 transition-colors duration-500 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-50 dark:bg-black py-12 md:py-20 px-4 transition-colors duration-500 relative overflow-hidden">
       {/* Background - Matches SearchResults */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -87,15 +87,18 @@ const FlightUsername = () => {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
+        {/* Multi-step Stepper */}
+        <BookingStepper currentStep={2} />
+
         {/* Back Button */}
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors bg-white/50 dark:bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
+          className="flex items-center gap-2 text-sm md:text-base text-gray-500 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors bg-white/50 dark:bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
         >
-          <ArrowLeft className="w-5 h-5" /> Back to Results
+          <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" /> Back to Results
         </button>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Left Col: Flight Summary (Sticky) */}
           <div className="md:col-span-1">
             <motion.div
@@ -272,7 +275,7 @@ const FlightUsername = () => {
                           Baggage Preference
                         </h4>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <label className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-purple-500 transition-colors bg-white dark:bg-black/20">
                           <input
                             type="checkbox"

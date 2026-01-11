@@ -93,13 +93,14 @@ const Navbar = () => {
               href="/"
               className="flex-shrink-0 flex items-center gap-3 group"
             >
-              <div className="relative w-50 h-50 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-48 h-48 transition-transform duration-300 group-hover:scale-110">
                 <Image
                   src="/NewLogo.png"
                   alt="Travel Logo"
                   fill
-                  sizes="200px"
-                  className="object-contain rounded-full drop-shadow-sm"
+                  sizes="400px"
+                  className="object-contain rounded-full drop-shadow-xl"
+                  priority
                 />
               </div>
             </Link>
@@ -182,7 +183,7 @@ const Navbar = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={toggleProfile}
-                    className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20"
+                    className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-600 text-white shadow-lg shadow-purple-500/20 overflow-hidden border-[3px] border-white/20"
                   >
                     <img
                       src={user.avatar}
